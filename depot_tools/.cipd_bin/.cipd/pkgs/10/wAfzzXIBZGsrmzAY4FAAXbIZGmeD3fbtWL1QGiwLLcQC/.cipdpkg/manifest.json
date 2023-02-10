@@ -1,0 +1,217 @@
+{
+  "format_version": "1.1",
+  "package_name": "infra/goma/client/linux-amd64",
+  "install_mode": "copy",
+  "actual_install_mode": "copy",
+  "files": [
+    {
+      "name": "LICENSE",
+      "size": 91129,
+      "hash": "a6pNjFUnGU0TgDQ0qUPlwNTMR5-PQlAVI6AT7mIadhYC"
+    },
+    {
+      "name": "android/arm-eabi-g++",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/arm-eabi-gcc",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/arm-linux-androideabi-g++",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/arm-linux-androideabi-gcc",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/c++",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/cc",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/clang",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/clang++",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/compiler_proxy",
+      "size": 0,
+      "symlink": "../compiler_proxy"
+    },
+    {
+      "name": "android/g++",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/gcc",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/goma_auth",
+      "size": 0,
+      "symlink": "../goma_auth"
+    },
+    {
+      "name": "android/goma_auth.py",
+      "size": 0,
+      "symlink": "../goma_auth.py"
+    },
+    {
+      "name": "android/goma_ctl.py",
+      "size": 0,
+      "symlink": "../goma_ctl.py"
+    },
+    {
+      "name": "android/goma_fetch",
+      "size": 0,
+      "symlink": "../goma_fetch"
+    },
+    {
+      "name": "android/gomacc",
+      "size": 0,
+      "symlink": "../gomacc"
+    },
+    {
+      "name": "android/i686-android-linux-g++",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/i686-android-linux-gcc",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/i686-linux-g++",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/i686-linux-gcc",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/i686-unknown-linux-gnu-g++",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/i686-unknown-linux-gnu-gcc",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/i686-unknown-linux-gnu-i686-unknown-linux-gnu-g++",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/i686-unknown-linux-gnu-i686-unknown-linux-gnu-gcc",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/javac",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/sh-linux-gnu-g++",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "android/sh-linux-gnu-gcc",
+      "size": 0,
+      "symlink": "gomacc"
+    },
+    {
+      "name": "compiler_proxy",
+      "size": 71546824,
+      "executable": true,
+      "hash": "X8WoDamCGywJcJ8r_wE1axGZ-J0D3XR2A5PeRFkUbSUC"
+    },
+    {
+      "name": "compiler_proxy.sym",
+      "size": 15679011,
+      "hash": "dB1-aU7lMhr4AXVhFSIdUl5b8kw3Fri2T0D0TOUs-cMC"
+    },
+    {
+      "name": "diagnose_goma_log.py",
+      "size": 23757,
+      "executable": true,
+      "hash": "PYRO3BGaPkqYVU82qI1sed-C-fTKPmhWXPl7HyAAwAoC"
+    },
+    {
+      "name": "goma_auth",
+      "size": 156,
+      "executable": true,
+      "hash": "XKjLFeylVJg6WBzlwaKWG1nyU66Mf_xyOCBJ_ihPVr4C"
+    },
+    {
+      "name": "goma_auth.py",
+      "size": 15824,
+      "executable": true,
+      "hash": "XZ8gxS276kD6KDveqPAQFo3NABSEKZCBlL7-B4mwUCAC"
+    },
+    {
+      "name": "goma_ctl.py",
+      "size": 77894,
+      "executable": true,
+      "hash": "tfvNcpHh0fBxzLfRhhe_LYSaXOyGFHtuKmqIyIdUwUkC"
+    },
+    {
+      "name": "goma_fetch",
+      "size": 36067392,
+      "executable": true,
+      "hash": "7plzpmir7J-ReBXtpbnBgZlsK5Nv4fEzrwVcq3shy20C"
+    },
+    {
+      "name": "gomacc",
+      "size": 31192672,
+      "executable": true,
+      "hash": "1S7IIPRjCJIPYgz_ogQ7qcegJYe0QmlZ7jrPqLlGPagC"
+    },
+    {
+      "name": "gomacc.sym",
+      "size": 5159886,
+      "hash": "n0-1DfhX6m7kkLYf8TxbtLVz4JkwX1nNfa6usmSROIAC"
+    },
+    {
+      "name": "http_proxy",
+      "size": 7176635,
+      "executable": true,
+      "hash": "gtLzaJhWD0PD8EWFHniWHFh5F5Lt-zh9SWyCASpSwTQC"
+    },
+    {
+      "name": "report_env.sh",
+      "size": 1542,
+      "executable": true,
+      "hash": "Y2u_UanGMRhDrVVCutST3FGDk41R6cEdEuiqqK_n4y8C"
+    },
+    {
+      "name": "sha256.json",
+      "size": 841,
+      "hash": "MrxcIM2Rhz4QvtwmEXKSwvWw82vH4r47bbpfQNX-6U4C"
+    }
+  ]
+}

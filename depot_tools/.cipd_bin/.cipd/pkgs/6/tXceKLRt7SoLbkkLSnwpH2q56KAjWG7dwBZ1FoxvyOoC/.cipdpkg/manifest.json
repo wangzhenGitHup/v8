@@ -1,0 +1,20 @@
+{
+  "format_version": "1.1",
+  "package_name": "infra/tools/bb/linux-amd64",
+  "version_file": ".versions/bb.cipd_version",
+  "install_mode": "copy",
+  "actual_install_mode": "copy",
+  "files": [
+    {
+      "name": "bb",
+      "size": 18909480,
+      "executable": true,
+      "hash": "GbUibhEyKaCPDnacXjiehAS0lAMq3Ha03MLHNHI17AEC"
+    },
+    {
+      "name": ".versions/bb.cipd_version",
+      "size": 115,
+      "hash": "x2qKhIxdCkrJXj2SiqoEwWYwgtJT5W91mt8zlUwQz4AC"
+    }
+  ]
+}
