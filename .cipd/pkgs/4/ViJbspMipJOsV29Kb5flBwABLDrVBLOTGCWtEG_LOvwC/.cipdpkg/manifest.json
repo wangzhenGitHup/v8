@@ -1,0 +1,77 @@
+{
+  "format_version": "1.1",
+  "package_name": "infra/rbe/client/linux-amd64",
+  "install_mode": "copy",
+  "actual_install_mode": "copy",
+  "files": [
+    {
+      "name": "CHANGELOG.md",
+      "size": 75656,
+      "hash": "PBkQH8S40lfEdCDt7uB0zR5kpuxawl8hffzji8jvEm8C"
+    },
+    {
+      "name": "LICENSE",
+      "size": 11358,
+      "hash": "z8d0m5b2O9McPEK1xHG_dWgUBT6EfBDz6wA0F7xSPTAC"
+    },
+    {
+      "name": "NOTICE",
+      "size": 6808,
+      "hash": "qRjF8Ls1dY-YIpgTfxjowuLiK6UBpTgLGxHkOosrhJ8C"
+    },
+    {
+      "name": "bootstrap",
+      "size": 20133758,
+      "executable": true,
+      "hash": "jwgFcVGBzZkZdH5c2iUxKSQrHJyEgAURWT1K3DNU_f8C"
+    },
+    {
+      "name": "dumpstats",
+      "size": 12624861,
+      "executable": true,
+      "hash": "KmypfwjXVwb5_20-cILGScAtCsEV9XXCbx0jHRuq0kAC"
+    },
+    {
+      "name": "logdump",
+      "size": 12385860,
+      "executable": true,
+      "hash": "jN8OWR4PfCTPxiWzXAVHWIPgonDZMssNPnWvF8i5bBAC"
+    },
+    {
+      "name": "reproxy",
+      "size": 41414120,
+      "executable": true,
+      "hash": "flkQR8bkvbVa7F-qeF2O39FPP3XFNFd2e58BdjtsXyMC"
+    },
+    {
+      "name": "reproxystatus",
+      "size": 12057417,
+      "executable": true,
+      "hash": "ZLEh58qlmRcYc77Qs7HSOIux3pgzGCIPd3Mc9plRYtoC"
+    },
+    {
+      "name": "rewrapper",
+      "size": 12547161,
+      "executable": true,
+      "hash": "6Hr19fpUpMWxMfjhFTgZBz6mr6syiRP-oLdRiyQ8jrsC"
+    },
+    {
+      "name": "rpl2cloudtrace",
+      "size": 15881729,
+      "executable": true,
+      "hash": "5iSj_WhvxzSJxpII36JoZoVlgir77BLJG-LPx5GPCzcC"
+    },
+    {
+      "name": "rpl2trace",
+      "size": 12405341,
+      "executable": true,
+      "hash": "QeKnzgNhEJy82PgDvRxfbF9ftEi8YMUi_D5jE7c2mEkC"
+    },
+    {
+      "name": "scandeps_server",
+      "size": 36226000,
+      "executable": true,
+      "hash": "hT6QT6xX0FnE6MDpbJRdzw9tqQ5VM-E5yi3Zxbb4NCcC"
+    }
+  ]
+}
