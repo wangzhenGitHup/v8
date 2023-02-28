@@ -1,8 +1,0 @@
-m4_include(`core.m4')
-m4_include(`builtin.m4')
-DEF_ATTRIBUTES(generic_type)
-DEF_TYPES(BUILTIN_TYPES)
-DEF_ABILITIES(BUILTIN_ALL_ABILITIES)
-m4_include(`ability_hierachy/ability_annotations.m4')
-DEF_ACTIONS(BUILTIN_ALL_ACTIONS)
-PORT_RANGE(T(reserved_port_range))

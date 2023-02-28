@@ -1,5 +1,0 @@
-[service]
-NAME=devhost
-PROCESS_NAME=/bin/devhost.elf
-MONITOR_ENABLE=0
-SYSTEM_SERVICE=1

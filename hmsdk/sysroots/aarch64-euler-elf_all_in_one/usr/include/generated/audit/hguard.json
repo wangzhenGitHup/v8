@@ -1,1 +1,0 @@
-{"server_name": "hguard", "methods": ["hguard_procfs_get_config", "hguard_procfs_set_config", "hguard_procfs_rsvd_2", "hguard_procfs_rsvd_1", "hguard_service_notify", "hguard_service_process_exit", "hguard_service_start", "hguard_service_rsvd_1"]}

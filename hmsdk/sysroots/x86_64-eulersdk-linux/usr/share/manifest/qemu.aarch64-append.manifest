@@ -1,3 +1,0 @@
-copy		lib/modules/virtio_pci.ko	lib/modules		comp
-copy		usr/bin/ftrace-test.elf		usr/bin			comp
-copy		usr/bin/shell_test/ftrace_cmdtest.sh	usr/bin/shell_test	comp

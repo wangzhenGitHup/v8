@@ -1,5 +1,0 @@
-[service]
-NAME=devmgr
-PROCESS_NAME=/bin/devmgr.elf
-MONITOR_ENABLE=0
-SYSTEM_SERVICE=1

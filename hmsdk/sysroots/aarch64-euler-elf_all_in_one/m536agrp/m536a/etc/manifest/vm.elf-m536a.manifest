@@ -1,5 +1,0 @@
-system_service:bool:true
-sync_reclaimable:bool:true
-debuggable:bool:false
-killable:bool:true
-stoppable:bool:false

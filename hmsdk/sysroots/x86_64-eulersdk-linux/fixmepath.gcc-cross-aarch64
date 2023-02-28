@@ -1,7 +1,0 @@
-recipe-sysroot-native/usr/lib/gcc/aarch64-hongmeng-musl/7.3.0/install-tools/mkheaders.conf
-recipe-sysroot-native/usr/lib/gcc/aarch64-hongmeng-musl/7.3.0/plugin/include/configargs.h
-recipe-sysroot-native/usr/lib/gcc/aarch64-hongmeng-musl/7.3.0/plugin/libcc1plugin.la
-recipe-sysroot-native/usr/lib/gcc/aarch64-hongmeng-musl/7.3.0/plugin/libcp1plugin.la
-recipe-sysroot-native/usr/lib/libcc1.la
-recipe-sysroot-native/usr/libexec/gcc/aarch64-hongmeng-musl/7.3.0/liblto_plugin.la
-recipe-sysroot-native/usr/libexec/gcc/aarch64-hongmeng-musl/7.3.0/install-tools/mkheaders

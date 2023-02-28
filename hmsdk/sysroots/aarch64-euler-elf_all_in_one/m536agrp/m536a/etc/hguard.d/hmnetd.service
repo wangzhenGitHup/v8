@@ -1,5 +1,0 @@
-[service]
-NAME=hmnetd
-PROCESS_NAME=/bin/hmnetd.elf
-MONITOR_ENABLE=0
-SYSTEM_SERVICE=1

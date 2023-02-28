@@ -1,5 +1,0 @@
-INCLUDE(`builtin.m4')
-DEF_TYPES(data_dir)
-DEF_FILE_OBJECT(data_dir, ``/data'')
-TYPE_ADD_ATTRIBUTES((data_dir), (basic_dir))
-TE_POLICY(T(hminit), T(data_dir), (BUILTIN_FILE_WRITE))

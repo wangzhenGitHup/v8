@@ -1,1 +1,0 @@
-../../generated/sysif_client/pwrmgr/libsysif/pwrmgr/api.h

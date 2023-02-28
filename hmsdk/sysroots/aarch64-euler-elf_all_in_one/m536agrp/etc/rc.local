@@ -1,9 +1,0 @@
-#!/bin/bash
-echo "This is default rc.local script"
-
-# running local startup scripts
-echo "Running local startup scripts."
-for f in /etc/rc.start/* ; do
-	$f
-done
-exit 0

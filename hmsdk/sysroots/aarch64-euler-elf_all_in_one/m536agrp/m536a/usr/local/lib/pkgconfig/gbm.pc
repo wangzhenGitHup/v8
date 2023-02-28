@@ -1,9 +1,0 @@
-prefix=/usr/local
-libdir=${prefix}/lib
-includedir=${prefix}/include
-
-Name: gbm
-Description: Mesa gbm library
-Version: 20.2.6
-Libs: -L${libdir} -lgbm
-Cflags: -I${includedir}
