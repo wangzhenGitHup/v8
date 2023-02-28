@@ -1,0 +1,13 @@
+#!/bin/bash
+
+### create symlink busyboxhm.elf as busybox ###
+ln -s /bin/busyboxhm.elf /bin/busybox
+
+### create symlink /proc/mounts as /etc/mtab ###
+ln -s /proc/mounts /etc/mtab
+
+### fsck filesystems in /etc/fstab
+fsck
+
+### Launch rc.local
+sh /etc/rc.local

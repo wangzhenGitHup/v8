@@ -1,0 +1,7 @@
+prefix=${pcfiledir}/../../../usr
+exec_prefix=${pcfiledir}/../../../usr
+makefile_include=${prefix}/share/kbuild-standalone/Makefile.include
+
+Name: kbuild standalone
+Description: A standalone solution for kbuild and kconfig
+Version: 5.7

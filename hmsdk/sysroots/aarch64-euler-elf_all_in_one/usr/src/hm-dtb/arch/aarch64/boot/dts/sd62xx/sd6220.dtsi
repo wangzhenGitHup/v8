@@ -1,0 +1,64 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2020-2021. All rights reserved.
+ * Description: Device Tree Include file for SD6220 SoC
+ * Author: Huawei OS Kernel Lab
+ * Create: Thu Sep 13 03:39:49 2020
+ */
+
+/ {
+	hmmicrokernel {
+		model = "Hisilicon PhosphorSD6220";
+		compatible = "hisilicon,sd6220-fpga", "hisilicon,hisi-sd6220";
+
+		psci {
+			compatible = "arm,psci";
+			method = "smc";
+		};
+
+		cpus {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			cpu0: cpu@0 {
+				compatible = "arm,cortex-a53", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <0>;
+				reg = <0x80000000>;
+				pmu {
+					compatible = "arm,armv8-pmuv3";
+					interrupt-parent = <&gic>;
+					/* SPI 64: PMUIRQ, group default, prio:0x60 */
+					interrupts = <64 0x00000060 0x1>;
+				};
+			};
+			cpu1: cpu@1 {
+				compatible = "arm,cortex-a53", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <1>;
+				reg = <0x80000001>;
+				pmu {
+					compatible = "arm,armv8-pmuv3";
+					interrupt-parent = <&gic>;
+					/* SPI 147: PMUIRQ, group default, prio:0x60 */
+					interrupts = <147 0x00000060 0x2>;
+				};
+			};
+		};
+
+		cpu_extra_info {
+			compatible = "cpu_info,extra_info";
+			/* this is same with sd6219e */
+			cpu_desc = "6219e";
+			cpu_valid_info = <0x00000003>;
+			cpu_num = <2>;
+			cpu_version = "SD6220V100";
+		};
+
+		/* using user-level irq dispatcher to manage all rru irqs */
+		rru_interrupts {
+			//interrupts = ;
+		};
+	};
+};
+
+/include/ "sd62xx.dtsi"

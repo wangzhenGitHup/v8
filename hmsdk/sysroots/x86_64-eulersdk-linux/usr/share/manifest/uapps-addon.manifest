@@ -1,0 +1,3 @@
+copy	usr/lib/policy.db	.	raw
+copy	usr/lib/policy_bypass.db	.	raw
+copy	boot/sysmgr.elf	.	raw

@@ -1,0 +1,164 @@
+/ {
+	soc {
+		virtio_mmio@a000000 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a000000 0x0 0x200>;
+			interrupts = <48 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a000200 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a000200 0x0 0x200>;
+			interrupts = <49 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a000400 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a000400 0x0 0x200>;
+			interrupts = <50 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a000600 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a000600 0x0 0x200>;
+			interrupts = <51 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a000800 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a000800 0x0 0x200>;
+			interrupts = <52 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a000a00 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a000a00 0x0 0x200>;
+			interrupts = <53 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a000c00 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a000c00 0x0 0x200>;
+			interrupts = <54 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a000e00 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a000e00 0x0 0x200>;
+			interrupts = <55 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a001000 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a001000 0x0 0x200>;
+			interrupts = <56 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a001200 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a001200 0x0 0x200>;
+			interrupts = <57 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a001400 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a001400 0x0 0x200>;
+			interrupts = <58 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a001600 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a001600 0x0 0x200>;
+			interrupts = <59 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a001800 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a001800 0x0 0x200>;
+			interrupts = <60 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a001a00 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a001a00 0x0 0x200>;
+			interrupts = <61 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a001c00 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a001c00 0x0 0x200>;
+			interrupts = <62 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a001e00 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a001e00 0x0 0x200>;
+			interrupts = <63 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a002000 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a002000 0x0 0x200>;
+			interrupts = <64 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a002200 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a002200 0x0 0x200>;
+			interrupts = <65 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a002400 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a002400 0x0 0x200>;
+			interrupts = <66 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a002600 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a002600 0x0 0x200>;
+			interrupts = <67 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a002800 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a002800 0x0 0x200>;
+			interrupts = <68 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a002a00 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a002a00 0x0 0x200>;
+			interrupts = <69 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a002c00 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a002c00 0x0 0x200>;
+			interrupts = <70 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a002e00 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a002e00 0x0 0x200>;
+			interrupts = <71 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a003000 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a003000 0x0 0x200>;
+			interrupts = <72 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a003200 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a003200 0x0 0x200>;
+			interrupts = <73 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a003400 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a003400 0x0 0x200>;
+			interrupts = <74 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a003600 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a003600 0x0 0x200>;
+			interrupts = <75 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a003800 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a003800 0x0 0x200>;
+			interrupts = <76 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a003a00 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a003a00 0x0 0x200>;
+			interrupts = <77 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a003c00 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a003c00 0x0 0x200>;
+			interrupts = <78 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@a003e00 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x0a003e00 0x0 0x200>;
+			interrupts = <79 0x000000E0 0x00000001>;
+		};
+	};
+};

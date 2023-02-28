@@ -1,0 +1,117 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2021-2021. All rights reserved.
+ * Description: Generate for uvmm sysif api
+ * Author: Huawei OS Kernel Lab
+ * Create: Tue May 18 14:42:19 2021
+ */
+
+#ifdef SYSIF_EXPORT_API
+
+#define CHN_NAME_MAX_LEN 32
+
+struct vm_attach_chn_arg_s {
+	unsigned long long faddr;
+	char name[CHN_NAME_MAX_LEN];
+	unsigned int flags;
+};
+
+struct vnotify_msg_s;
+struct vnotify_resp_s;
+
+#endif
+
+DEFINE_MANAGER(uvmm, 32,
+	DEFINE_METHOD(uvmm, vm_shm_open,
+		      ARG(1, int, shm_id),
+		      RET(3, unsigned long long, shm_id, unsigned long, len, __u64, paddr),
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(uvmm, vm_shm_close,
+		      ARG(1, int, shm_id),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(uvmm, vm_get_info,
+		      ARG(1, void *, vmctl_info),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(uvmm, vm_process_create_chn,
+		      ARG(2, unsigned long long, faddr, unsigned int, chn_id),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(uvmm, vm_process_attach_chn,
+		      ARG(1, struct vm_attach_chn_arg_s, args),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(uvmm, vm_process_delete_chn,
+		      ARG(3, unsigned int, chn_id, bool, sync, __u64, ts),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(uvmm, vm_process_notify_chn,
+		      ARG(1, unsigned int, chn_id),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(uvmm, vm_process_inject_chn,
+		      ARG(1, unsigned int, chn_id),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(uvmm, vm_process_read_chn_status,
+		      ARG(1, unsigned int, chn_id),
+		      RET(1, unsigned int, status),
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(uvmm, handle_vm_process_exit,
+		      ARG(1, __u32, cnode_idx),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(uvmm, vm_pause,
+		      ARG_NO,
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(uvmm, vm_unpause,
+		      ARG_NO,
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(uvmm, vm_resume,
+		      ARG_NO,
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(uvmm, vm_vnotify_chns_info,
+		      ARG(1, struct bunch_ipc_attr, attr),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(uvmm, mclone_to_vm,
+		      ARG(4, uint64_t, src_va,
+			  uint64_t, tgt_gpa,
+			  uint64_t, len,
+			  uint32_t, prot),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(uvmm, vnotify_send_ctrl_msg,
+		      ARG(2, struct vnotify_msg_s *, msg,
+			  struct vnotify_resp_s *, resp),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(uvmm, vm_cpu_hotplug,
+		      ARG_NO,
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(uvmm, vm_trace_stats,
+		      ARG(2, int, act, uint64_t, args),
+		      RET_NO,
+		      SLOWDATA_NO)
+)

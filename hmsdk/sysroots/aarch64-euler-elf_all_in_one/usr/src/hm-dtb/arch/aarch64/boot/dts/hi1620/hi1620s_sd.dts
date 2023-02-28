@@ -1,0 +1,570 @@
+/dts-v1/;
+/ { #address-cells = <2>; #size-cells = <2>; hmmicrokernel {
+	interrupt-parent = <&gic>;
+	#address-cells = <2>;
+	#size-cells = <2>;
+
+	psci {
+		compatible = "arm,psci";
+		method = "smc";
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		cpu0:  cpu@0  {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <0>;
+			reg = <0x81180000>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+				interrupt-parent = <&gic>;
+				/* PPI 23: PMUIRQ, level triggered, hwprio:0x60 */
+				interrupts = <23 0x00000060 0xFFFFFFFF>;
+			};
+		};
+		cpu1:  cpu@1  {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <1>;
+			reg = <0x81180100>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+				interrupt-parent = <&gic>;
+				/* PPI 23: PMUIRQ, level triggered, hwprio:0x60 */
+				interrupts = <23 0x00000060 0xFFFFFFFF>;
+			};
+		};
+		cpu2:  cpu@2  {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <2>;
+			reg = <0x81180200>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+				interrupt-parent = <&gic>;
+				/* PPI 23: PMUIRQ, level triggered, hwprio:0x60 */
+				interrupts = <23 0x00000060 0xFFFFFFFF>;
+			};
+		};
+		cpu3:  cpu@3  {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <3>;
+			reg = <0x81180300>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+				interrupt-parent = <&gic>;
+				/* PPI 23: PMUIRQ, level triggered, hwprio:0x60 */
+				interrupts = <23 0x00000060 0xFFFFFFFF>;
+			};
+		};
+		cpu4:  cpu@4  {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <4>;
+			reg = <0x81190000>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+				interrupt-parent = <&gic>;
+				/* PPI 23: PMUIRQ, level triggered, hwprio:0x60 */
+				interrupts = <23 0x00000060 0xFFFFFFFF>;
+			};
+		};
+		cpu5:  cpu@5  {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <5>;
+			reg = <0x81190100>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+				interrupt-parent = <&gic>;
+				/* PPI 23: PMUIRQ, level triggered, hwprio:0x60 */
+				interrupts = <23 0x00000060 0xFFFFFFFF>;
+			};
+		};
+		cpu6:  cpu@6  {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <6>;
+			reg = <0x81190200>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+				interrupt-parent = <&gic>;
+				/* PPI 23: PMUIRQ, level triggered, hwprio:0x60 */
+				interrupts = <23 0x00000060 0xFFFFFFFF>;
+			};
+		};
+		cpu7:  cpu@7  {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <7>;
+			reg = <0x81190300>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+				interrupt-parent = <&gic>;
+				/* PPI 23: PMUIRQ, level triggered, hwprio:0x60 */
+				interrupts = <23 0x00000060 0xFFFFFFFF>;
+			};
+		};
+		cpu8:  cpu@8  {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <8>;
+			reg = <0x811a0000>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+				interrupt-parent = <&gic>;
+				/* PPI 23: PMUIRQ, level triggered, hwprio:0x60 */
+				interrupts = <23 0x00000060 0xFFFFFFFF>;
+			};
+		};
+		cpu9:  cpu@9  {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <9>;
+			reg = <0x811a0100>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+				interrupt-parent = <&gic>;
+				/* PPI 23: PMUIRQ, level triggered, hwprio:0x60 */
+				interrupts = <23 0x00000060 0xFFFFFFFF>;
+			};
+		};
+		cpu10: cpu@10 {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <10>;
+			reg = <0x811a0200>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+				interrupt-parent = <&gic>;
+				/* PPI 23: PMUIRQ, level triggered, hwprio:0x60 */
+				interrupts = <23 0x00000060 0xFFFFFFFF>;
+			};
+		};
+		cpu11: cpu@11 {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <11>;
+			reg = <0x811a0300>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+				interrupt-parent = <&gic>;
+				/* PPI 23: PMUIRQ, level triggered, hwprio:0x60 */
+				interrupts = <23 0x00000060 0xFFFFFFFF>;
+			};
+		};
+		cpu12: cpu@12 {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <12>;
+			reg = <0x811b0000>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+				interrupt-parent = <&gic>;
+				/* PPI 23: PMUIRQ, level triggered, hwprio:0x60 */
+				interrupts = <23 0x00000060 0xFFFFFFFF>;
+			};
+		};
+		cpu13: cpu@13 {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <13>;
+			reg = <0x811b0100>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+				interrupt-parent = <&gic>;
+				/* PPI 23: PMUIRQ, level triggered, hwprio:0x60 */
+				interrupts = <23 0x00000060 0xFFFFFFFF>;
+			};
+		};
+		cpu14: cpu@14 {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <14>;
+			reg = <0x811b0200>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+				interrupt-parent = <&gic>;
+				/* PPI 23: PMUIRQ, level triggered, hwprio:0x60 */
+				interrupts = <23 0x00000060 0xFFFFFFFF>;
+			};
+		};
+		cpu15: cpu@15 {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <15>;
+			reg = <0x811b0300>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+				interrupt-parent = <&gic>;
+				/* PPI 23: PMUIRQ, level triggered, hwprio:0x60 */
+				interrupts = <23 0x00000060 0xFFFFFFFF>;
+			};
+		};
+//		cpu16: cpu@16 { compatible = "arm,cortex-a55", "arm,armv8"; device_type = "cpu"; logic_id = <16>; reg = <0x811c0000>; pmu { compatible = "arm,armv8-pmuv3"; }; };
+//		cpu17: cpu@17 { compatible = "arm,cortex-a55", "arm,armv8"; device_type = "cpu"; logic_id = <17>; reg = <0x811c0100>; pmu { compatible = "arm,armv8-pmuv3"; }; };
+//		cpu18: cpu@18 { compatible = "arm,cortex-a55", "arm,armv8"; device_type = "cpu"; logic_id = <18>; reg = <0x811c0200>; pmu { compatible = "arm,armv8-pmuv3"; }; };
+//		cpu19: cpu@19 { compatible = "arm,cortex-a55", "arm,armv8"; device_type = "cpu"; logic_id = <19>; reg = <0x811c0300>; pmu { compatible = "arm,armv8-pmuv3"; }; };
+//		cpu20: cpu@20 { compatible = "arm,cortex-a55", "arm,armv8"; device_type = "cpu"; logic_id = <20>; reg = <0x811d0000>; pmu { compatible = "arm,armv8-pmuv3"; }; };
+//		cpu21: cpu@21 { compatible = "arm,cortex-a55", "arm,armv8"; device_type = "cpu"; logic_id = <21>; reg = <0x811d0100>; pmu { compatible = "arm,armv8-pmuv3"; }; };
+//		cpu22: cpu@22 { compatible = "arm,cortex-a55", "arm,armv8"; device_type = "cpu"; logic_id = <22>; reg = <0x811d0200>; pmu { compatible = "arm,armv8-pmuv3"; }; };
+//		cpu23: cpu@23 { compatible = "arm,cortex-a55", "arm,armv8"; device_type = "cpu"; logic_id = <23>; reg = <0x811d0300>; pmu { compatible = "arm,armv8-pmuv3"; }; };
+	};
+
+	memory@00000000 {
+		device_type = "memory";
+		reg = <0x00000000 0x07e00000 0x00000000 0x58200000>,
+		      <0x00000000 0x72000000 0x00000000 0x0c000000>,
+		      <0x00000020 0x80000000 0x00000001 0x60000000>;
+	};
+
+	sysproc {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		sysmgr {
+			compatible = "sysproc", "sysmgr";
+			/* filled by bootloader */
+			reg      = <0x0 0x0 0x0 0x0>;
+			vphdr    = <0x0 0x0>;
+			ventry   = <0x0 0x0>;
+			pvoffset = <0x0 0x0>;
+			nphdrs   = <0>;
+			stack_start = <0x0 0x0>;
+			stack_end = <0x0 0x0>;
+			canary = <0x0 0x0>;
+		};
+
+		idle {
+			compatible = "sysproc", "idle";
+			/* filled by bootloader */
+			reg      = <0x0 0x0 0x0 0x0>;
+			vphdr    = <0x0 0x0>;
+			ventry   = <0x0 0x0>;
+			pvoffset = <0x0 0x0>;
+			nphdrs   = <0>;
+			stack_start = <0x0 0x0>;
+			stack_end = <0x0 0x0>;
+			canary = <0x0 0x0>;
+		};
+
+		rootfsdata {
+			compatible = "sysproc", "rootfs";
+			reg = <0x20 0x80004000 0x0 0x40000000>;
+			ventry = <0x0 0x0>;
+			/* filled by bootloader */
+			pvoffset = <0x0 0x0>;
+			canary = <0x0 0x0>;
+		};
+	};
+
+	kernel {
+		compatible = "kernel";
+		/* filled by bootloader */
+		canary = <0x0 0x0>;
+	};
+
+	bootdata {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		dtb {
+			compatible = "bootdata", "dtb";
+			/* filled by bootloader */
+			reg = <0x0 0x0 0x0 0x0>;
+		};
+	};
+
+	timer {
+		compatible = "arm,armv8-timer";
+		clock-frequency = <10000000>;
+
+		/* interrupt settings */
+		interrupt-parent = <&gic>;
+
+		/* PPI 30: Non-secure physical timer
+		 * level triggered, hwprio:0x60 */
+		interrupts = <30 0x00000060 0xFFFFFFFF>;
+	};
+
+	/* See Documentation/dts-gic.md for interrupts and distributor_config */
+	gic: interrupt-controller@aa000000 {
+		compatible = "arm,gic-v3";
+
+		#address-cells = <2>;
+		#size-cells = <2>;
+
+		/* Enable group 0, Group1NS, Group1S, ARE_NS, ARE_S,
+		 * Split EOI and Deactive Mode */
+		distributor-config = <0x80000037>;
+
+		#interrupt-cells = <3>;
+		#redistributor-regions = <1>;
+		redistributor-stride = <0x40000>;
+		interrupt-controller;
+
+		reg =	<0x0 0xaa000000 0x0 0x10000>,	/* GICD */
+			<0x0 0xaa100000 0x0 0x800000>;	/* GICR */
+		alignment = <0x100000 0x100000>;
+
+		interrupts = <25 0x000000E0 0xFFFFFFFF>;
+
+		/* We haven't support this */
+		its: interrupt-controller@a8100000 {
+			compatible = "arm,gic-v3-its";
+			msi-controller;
+			reg = <0x0 0xa8100000 0x0 0x1000000>;
+			alignment = <0x100000>;
+			#interrupt-cells = <4>;
+		};
+	};
+
+	ipi {
+		/* smp ipi */
+		compatible = "arm,smp-ipi";
+
+		interrupt-parent = <&gic>;
+
+		/* interrupt settings:
+		 * 1st cell: real hardware irq number
+		 *     ARM recommendation: ID 0-7 for Non-Secure;
+		 *                         ID 8-15 for Secure Interrupt
+		 * 2nd cell: interrupt config
+		 *     bit [27:26]: Group setting
+		 *     bit [24]: Trigger Type
+		 *     bit [23:8]: Reserved
+		 *     bit [7:0]: Priority
+		 * 3rd cell: interrupt target config
+		 *     Warning: Send to all cpus by default
+		 */
+		interrupts =	<0 0x00000060 0xFFFFFFFF>, /* IPI_RESCHEDULE */
+				<1 0x00000060 0xFFFFFFFF>; /* IPI_CALL_FUNC */
+	};
+
+	/* used to debug its driver */
+	debug_dev0:dev_debug@0 {
+		compatible = "arm,gic-its-debug0";
+		/* devid is 0x245, nr is 25, config is 0x000000E0 0xFFFFFFFF */
+		interrupts = <0x245 25 0x000000E0 0xFFFFFFFF>;
+		msi-parent = <&its>;
+	};
+
+	kev {
+		compatible = "huawei,kev-trace";
+
+		memory {
+			type = <0x0>;
+			id = <0x0>;
+			ring-buffer-count = <0x4>;
+			ring-buffer-sizes = <0x40000 0x100000 0x40000 0x200000>;
+		};
+		kev_sample {
+			config = <0x2>;
+			enable = <0x1>;
+		};
+		kev_klog {
+			config = <0x8>;
+			enable = <0x1>;
+		};
+		kev_fiq {
+			enable = <0x1>;
+		};
+	};
+
+	hm-udrv {
+		compatible = "udrv";
+		reg = <0x0 0x94080000 0x0 0x10000>,
+		      <0x0 0x94100000 0x0 0x10000>,
+		      <0x0 0xd7c00000 0 0x0200000>, /* pcie 4 reg */
+		      <0x0 0xd7400000 0 0x0400000>, /* pcie 5 reg */
+		      <0x0 0xd7a00000 0 0x0100000>, /* pcie 2 reg */
+		      <0x0 0xd7b00000 0 0x0100000>, /* pcie 1 reg */
+		      <0x0 0xd0000000 0 0x4000000>, /* pcie 0 reg */
+		      <0x1   0x20000000 0x0 0x20000000>, /* pcie4 ranges */
+		      <0x1   0x41000000 0x0 0x01000000>, /* pcie5 ranges */
+		      <0x0   0xa2000000 0x0 0x01000000>,
+		      <0x2   0x0c000000 0x0 0x00200000>, /* pcie2 ranges */
+		      <0x1   0x48800000 0x0 0x00800000>, /* pcie1 ranges */
+		      <0x800 0x00000000 0x40 0x00000000>, /* pcie0 ranges */
+		      <0x0   0xe0000000 0x0  0x0fff0000>,
+		      <0x0   0xefff0000 0x0  0x10000>,
+		      <0x1   0x48200000 0x0  0x200000>, /* pcie p2p ranges */
+		      <0x1   0x48070000 0x0  0x1000>,   /* pcie p2p ranges */
+		      <0x21 0xE0000000 0x0 0x20000000>;   /* iccshmem ranges */
+
+		interrupts = <0x0000 32  0x000000E0 0xFFFFFFFF>,	/* pcieport */
+			     <0x0008 32  0x000000E0 0xFFFFFFFF>,
+			     <0x0010 32  0x000000E0 0xFFFFFFFF>,
+			     <0x0018 32  0x000000E0 0xFFFFFFFF>,
+			     <0x0020 32  0x000000E0 0xFFFFFFFF>,
+			     <0x0028 32  0x000000E0 0xFFFFFFFF>,
+			     <0x0030 32  0x000000E0 0xFFFFFFFF>,
+			     <0x0038 32  0x000000E0 0xFFFFFFFF>,
+			     <0x0080 32  0x000000E0 0xFFFFFFFF>,
+			     <0x0088 32  0x000000E0 0xFFFFFFFF>,
+			     <0x0090 32  0x000000E0 0xFFFFFFFF>,
+			     <0x0098 32  0x000000E0 0xFFFFFFFF>,
+			     <0x0100 129 0x000000E0 0xFFFFFFFF>,	/* 100~800 hi1910 */
+			     <0x0200 129 0x000000E0 0xFFFFFFFF>,
+			     <0x0300 129 0x000000E0 0xFFFFFFFF>,
+			     <0x0400 129 0x000000E0 0xFFFFFFFF>,
+			     <0x0500 129 0x000000E0 0xFFFFFFFF>,
+			     <0x0600 129 0x000000E0 0xFFFFFFFF>,
+			     <0x0700 129 0x000000E0 0xFFFFFFFF>,
+			     <0x0800 129 0x000000E0 0xFFFFFFFF>,
+			     <0x0900 20  0x000000E0 0xFFFFFFFF>,	/* Nvme */
+                             <0x0A00 32  0x000000E0 0xFFFFFFFF>,	/* A00/B00/C00 hi3559 */
+			     <0x0B00 32  0x000000E0 0xFFFFFFFF>,
+			     <0x0C00 32  0x000000E0 0xFFFFFFFF>,
+			     <0x7d07 80  0x000000E0 0xFFFFFFFF>;	/* HNS */
+
+		msi-parent = <&its>;
+	};
+
+	coredump {
+		coredump_force = <1>;
+	};
+	security {
+		trusted_boot = "disabled";
+	};
+	};
+
+	soc {
+		compatible = "simple-bus";
+		interrupt-parent = <&gic>;
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		uart0: uart@94080000 {
+			compatible = "arm,pl011", "arm,pl011,uart";
+			reg = <0x0 0x94080000 0x0 0x10000>;
+			alignment = <0x1000>;
+
+			/* kernel control input */
+			kernel-input;
+			/* enable fifo */
+			fifo-enabled;
+
+			interrupt-parent=<&gic>;
+			interrupts=<141 0x00000060 0x00000001>;
+		};
+
+		uio_test: uio_test@94080000 {
+			compatible = "genuio";
+			reg = <0x0 0x94080000 0x0 0x10000>;
+			alignment = <0x1000>;
+		};
+
+		iccshmem: iccshmem@0x21E0000000 {
+			compatible = "iccshmem";
+			reg = <0x00000021 0xE0000000 0x00000000 0x20000000>;
+		};
+
+		gpio2@0x94100000 {
+                        compatible = "snps,dw-apb-gpio";
+                        reg = <0 0x94100000 0 0x10000>;
+                        interrupt-parent = <&gic>;
+                        interrupts = <129 0x000000E0 0x00000001>;
+                        status = "ok";
+                        ngpio {
+                                reg = <0 0 0 0>;
+                                snps,nr-gpios = <32>;
+                        };
+                };
+
+		pcie4:pcie@d7c00000 { /* HNS */
+			compatible = "pci-host-ecam-generic", "udrv";
+			reg = <0x0 0xd7c00000 0 0x0200000>; /*   ECAM configuration space */
+			reg-names = "ecam-cfg";
+			bus-range = <0x7c  0x7d>;
+			#interrupt-cells = <1>;
+			msi-parent = <&its>;
+			#address-cells = <3>;
+			#size-cells = <2>;
+			device_type = "pci";
+			linux,pci-domain = <0>;
+			dma-coherent;
+			ranges = <0x83000000 0x1 0x20000000 0x1 0x20000000 0x0 0x20000000>; /* 64-bit non-prefetch BAR windows */
+			num-lanes = <8>;
+			port-id = <4>;
+			status = "ok";
+		};
+
+		pcie5:pcie@d7400000 { /* HAC */
+			compatible = "pci-host-ecam-generic", "udrv";
+			reg = <0x0 0xd7400000 0 0x0400000>; /*   ECAM configuration space */
+			reg-names = "ecam-cfg";
+			bus-range = <0x74  0x76>;
+			#interrupt-cells = <1>;
+			msi-parent = <&its>;
+			#address-cells = <3>;
+			#size-cells = <2>;
+			device_type = "pci";
+			linux,pci-domain = <0>;
+			dma-coherent;
+			ranges = <0x43000000 0x1   0x41000000 0x1   0x41000000 0x0  0x01000000>, /* 64-bit prefetch BAR windows */
+				 <0x02000000 0x0   0xa2000000 0x0   0xa2000000 0x0  0x01000000>; /* 32-bit non-prefetch BAR windows */
+			num-lanes = <8>;
+			port-id = <5>;
+			status = "ok";
+		};
+
+		pcie2:pcie@d7a00000 { /* IOMGT 0 */
+			compatible = "pci-host-ecam-generic", "udrv";
+			reg = <0x0 0xd7a00000 0 0x0100000>; /*   ECAM configuration space */
+			reg-names = "ecam-cfg";
+			bus-range = <0x7a  0x7a>;
+			#interrupt-cells = <1>;
+			msi-parent = <&its>;
+			#address-cells = <3>;
+			#size-cells = <2>;
+			device_type = "pci";
+			linux,pci-domain = <0>;
+			dma-coherent;
+			ranges = <0x82000000 0x2   0x0c000000 0x2   0x0c000000 0x0 0x00200000>; /* 32-bit non-prefetch BAR windows */
+			num-lanes = <8>;
+			port-id = <2>;
+			status = "ok";
+		};
+
+		pcie1:pcie@d7b00000 { /* PCI HOST 1 */
+			compatible = "pci-host-ecam-generic", "udrv";
+			reg = <0x0 0xd7b00000 0 0x0100000>; /*   ECAM configuration space */
+			reg-names = "ecam-cfg";
+			bus-range = <0x7b  0x7b>;
+			#interrupt-cells = <1>;
+			msi-parent = <&its>;
+			#address-cells = <3>;
+			#size-cells = <2>;
+			device_type = "pci";
+			linux,pci-domain = <0>;
+			dma-coherent;
+			ranges = <0x82000000 0x1   0x48800000 0x1   0x48800000 0x0 0x00800000>; /* 32-bit non-prefetch BAR windows */
+			num-lanes = <8>;
+			port-id = <1>;
+			status = "ok";
+		};
+
+		pcie0:pcie@d0000000 { /* PCI HOST 0 */
+			compatible = "pci-host-ecam-generic", "udrv";
+			reg = <0x0 0xd0000000 0 0x4000000>; /*   ECAM configuration space */
+			reg-names = "ecam-cfg";
+			bus-range = <0x00  0x3f>;
+			#interrupt-cells = <1>;
+			msi-parent = <&its>;
+			#address-cells = <3>;
+			#size-cells = <2>;
+			device_type = "pci";
+			linux,pci-domain = <0>;
+			dma-coherent;
+			ranges = <0x43000000 0x800 0x00000000 0x800 0x00000000 0x40 0x00000000>, /* 64-bit prefetch BAR windows */
+				 <0x02000000 0x0   0xe0000000 0x0   0xe0000000 0x0  0x0fff0000>, /* 32-bit non-prefetch BAR windows */
+				 <0x81000000 0x0   0x0        0x0   0xefff0000 0x0  0xc000>;  	 /* IO space */
+			num-lanes = <8>;
+			port-id = <0>;
+			status = "ok";
+		};
+	};
+};

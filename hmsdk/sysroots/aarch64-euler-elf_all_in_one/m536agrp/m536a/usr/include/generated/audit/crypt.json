@@ -1,0 +1,1 @@
+{"server_name": "crypto", "methods": ["crypto_rng_random_bytes", "crypto_rng_random_value", "crypto_rng_rsvd_2", "crypto_rng_rsvd_1", "crypto_procfs_read", "crypto_procfs_write", "crypto_procfs_rsvd_2", "crypto_procfs_rsvd_1", "crypto_crypto_register", "crypto_keymgr_add", "crypto_keymgr_request", "crypto_keymgr_control", "crypto_keymgr_rsvd_1"]}

@@ -1,0 +1,27 @@
+/dts-v1/;
+/plugin/;
+/ {
+	uart_overlay {
+		target-path = "/";
+		__overlay__ {
+			/* delete old node pl011@9000000 and add new node uart@09000000 */
+			/delete-node/ pl011@9000000;
+			uart0: uart@09000000 {};
+		};
+	};
+
+	gic_overlay{
+		target-path = "/intc";
+		__overlay__ {
+			compatible = "hongmeng,virqchip";
+			irqctrl_id = <0x8000000>;
+		};
+	};
+};
+
+&uart0 {
+	compatible = "arm,pl011","arm,pl011,uart";
+	reg = <0x0 0x09000000 0x0 0x1000>;
+	alignment = <0x1000>;
+	interrupts = <33 0x00000060 0x00000001>;
+};

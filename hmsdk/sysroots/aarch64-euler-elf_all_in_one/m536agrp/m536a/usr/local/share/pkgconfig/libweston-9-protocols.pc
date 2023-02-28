@@ -1,0 +1,11 @@
+prefix=/usr/local
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+datarootdir=${prefix}/share
+pkgdatadir=${pc_sysrootdir}${datarootdir}/libweston-9/protocols
+
+Name: libWeston Protocols
+Description: libWeston protocol files
+Version: 9.0.0
+Cflags: -I${includedir}

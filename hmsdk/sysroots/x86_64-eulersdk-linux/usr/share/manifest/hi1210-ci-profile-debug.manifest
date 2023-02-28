@@ -1,0 +1,89 @@
+# Author: Huawei OS Kernel Lab
+# Copyright (C) Huawei Technologies Co., Ltd. 2020. All rights reserved.
+# Description: Configuration for hi1210 images
+# This is debug profile, busyboxhm-ci-fixup.elf is symlink
+# busybox-ci-fixup is regular file in release profile and is symlink in debug profile,
+# following so for debug only
+# put this part of files into separated file and use OVERRIDE to select.
+copy	bin/busyboxhm-ci-fixup.elf	bin	raw
+copy	etc/rc.start/S03module	etc/rc.start	comp
+copy	lib/modules/udk_serial_8250.udk	lib/modules	comp
+copy	lib/modules/udktest_unload.udk	lib/modules	comp
+copy	usr/bin/dmctl.elf	usr/bin	comp
+copy	usr/bin/helloworld.elf	usr/bin	comp
+copy	usr/bin/hm-test-dynamic.elf	usr/bin	comp
+copy	usr/bin/hm-test.elf	usr/bin	comp
+copy	usr/bin/hm-testmaxpath.elf	usr/bin	comp
+copy	usr/bin/hmtrace-test-server.elf	usr/bin	comp
+copy	usr/bin/hm-spawn-test.elf	usr/bin	comp
+copy	usr/bin/hmesg.elf	usr/bin	comp
+copy	usr/bin/libc-dyn-memleak.elf	usr/bin	comp
+copy	usr/bin/libc-dyn-test.elf	usr/bin	comp
+copy	usr/bin/libc-memleak.elf	usr/bin	comp
+copy	usr/bin/libc-test.elf	usr/bin	comp
+copy	bin/perf.elf	usr/bin	comp
+copy	bin/perf_test.elf	usr/bin	comp
+copy	usr/bin/probe_dev.elf	usr/bin	comp
+copy	usr/bin/scripts/fs_cat_in_deep_dir.sh	usr/bin/shell_test	comp
+copy	usr/bin/scripts/fs_fsstress.sh	usr/bin/shell_test	comp
+copy	usr/bin/scripts/fs_mem_check1.sh	usr/bin/shell_test	comp
+copy	usr/bin/scripts/fs_mem_check2.sh	usr/bin/shell_test	comp
+copy	usr/bin/scripts/fs_racer_lib.sh	usr/bin/shell_test	comp
+copy	usr/bin/scripts/fs_racer.sh	usr/bin/shell_test	comp
+copy	usr/bin/shell_test/test_echo.sh	usr/bin/shell_test	comp
+copy	usr/bin/shell_test/test_perf_common.sh	usr/bin/shell_test	comp
+copy	usr/bin/shell_test/test_perf_record.sh	usr/bin/shell_test	comp
+copy	usr/bin/shell_test/test_perf_stat.sh	usr/bin/shell_test	comp
+copy	usr/bin/shell_test/uev_trace_cmdtest.sh	usr/bin/shell_test	comp
+copy	usr/bin/shutdownhm.elf	usr/bin	comp
+copy	usr/bin/sysdump.elf	usr/bin	comp
+copy	usr/bin/test-helper.elf	usr/bin	comp
+copy	usr/bin/tty_control.elf	usr/bin	comp
+copy	usr/bin/udk-test-base.elf	usr/bin	comp
+copy	usr/bin/udk-test-blk.elf	usr/bin	comp
+copy	usr/bin/udk-test-net.elf	usr/bin	comp
+copy	usr/bin/udk-test-unload.elf	usr/bin	comp
+copy	usr/bin/udk-test-unload.elf	usr/bin	comp
+copy	usr/lib/comm.so	lib/modules	comp
+copy	usr/lib/hibsplogcomm.so	lib/modules	comp
+copy	usr/lib/hicfi.so	lib/modules	comp
+copy	usr/lib/hicpuctrl.so	lib/modules	comp
+copy	usr/lib/hifemac.so	lib/modules	comp
+copy	usr/lib/hiftl.so	lib/modules	comp
+copy	usr/lib/higpio.so	lib/modules	comp
+copy	usr/lib/higpiodrv.so	lib/modules	comp
+copy	usr/lib/hii2c.so	lib/modules	comp
+copy	usr/lib/hinor.so	lib/modules	comp
+copy	usr/lib/liblinked.so.0.1	usr/lib	comp
+copy	usr/lib/libpreload.so.0.1	usr/lib	comp
+copy	usr/lib/libtest.so.0.1	usr/lib	comp
+copy	usr/lib/uartpwx.so	lib/modules	comp
+copy	lib/modules/udktest.udk	lib/modules	comp
+copy	lib/modules/udktest_net.udk	lib/modules	comp
+copy	sbin/telnetd	sbin	raw
+copy	sbin/arp	sbin	raw
+copy	usr/bin/iperf.elf	usr/bin	comp
+copy	usr/bin/netperf.elf	usr/bin	comp
+copy	usr/bin/qperf.elf	bin	comp
+copy	usr/bin/test-helper.elf	usr/bin	comp
+copy	usr/lib/liblinked.so	usr/lib	raw
+copy	usr/lib/liblinked.so.0	usr/lib	raw
+copy	usr/lib/libpreload.so	usr/lib	raw
+copy	usr/lib/libpreload.so.0	usr/lib	raw
+copy	usr/lib/libtest.so	usr/lib	raw
+copy	usr/lib/libtest.so.0	usr/lib	raw
+copy	bin/auditmgr.elf	bin	comp
+copy	usr/lib/libhmaudit.so		lib	raw
+copy	usr/lib/libhmaudit.so.0		lib	raw
+copy	usr/lib/libhmaudit.so.0.1	lib	comp
+# auditd
+mkdir	sbin
+mkdir	etc/audit
+mkdir	var/log/audit
+mkdir	var/run
+copy		usr/lib/libaudit.so	usr/lib		comp
+copy		usr/lib/libauparse.so	usr/lib		comp
+copy		usr/bin/auditctl	usr/bin		comp
+copy		usr/bin/auditd		usr/bin		comp
+copy		etc/auditd.conf		etc/audit	comp
+copy		etc/auditd.rules	etc/audit	comp

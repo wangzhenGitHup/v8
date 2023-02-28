@@ -1,0 +1,72 @@
+/*
+ * Device Tree Include file for TIANSHAN SD6221 AAU SoC
+ */
+
+/ {
+	hmmicrokernel {
+		model = "Hisilicon PhosphorSD6221";
+		compatible = "hisilicon,sd6221-fpga", "hisilicon,hisi-sd6221";
+
+		psci {
+			compatible = "arm,psci";
+			method = "smc";
+		};
+
+		cpus {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			cpu0: cpu@0 {
+				compatible = "arm,cortex-a53", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <0>;
+				reg = <0x80000000>;
+				pmu {
+					compatible = "arm,armv8-pmuv3";
+					interrupt-parent = <&gic>;
+					/* SPI 64: PMUIRQ, group default, prio:0x60 */
+					interrupts = <64 0x00000060 0x1>;
+				};
+			};
+			cpu1: cpu@1 {
+				compatible = "arm,cortex-a53", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <1>;
+				reg = <0x80000001>;
+				pmu {
+					compatible = "arm,armv8-pmuv3";
+					interrupt-parent = <&gic>;
+					/* SPI 147: PMUIRQ, group default, prio:0x60 */
+					interrupts = <147 0x00000060 0x2>;
+				};
+			};
+			cpu2: cpu@2 {
+				compatible = "arm,cortex-a53", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <2>;
+				reg = <0x80000002>;
+				pmu {
+					compatible = "arm,armv8-pmuv3";
+					interrupt-parent = <&gic>;
+					/* SPI 168: PMUIRQ, group default, prio:0x60 */
+					interrupts = <168 0x00000060 0x4>;
+				};
+			};
+		};
+
+		cpu_extra_info {
+			compatible = "cpu_info,extra_info";
+			/* this is same with sd6219e */
+			cpu_desc = "6219e";
+			cpu_num = <4>;
+			cpu_version = "SD6221V100";
+		};
+
+		/* using user-level irq dispatcher to manage all rru irqs */
+		rru_interrupts {
+			//interrupts = ;
+		};
+	};
+};
+
+/include/ "sd62xx.dtsi"

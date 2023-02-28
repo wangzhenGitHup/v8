@@ -1,0 +1,1 @@
+INPUT ( clang_rt.crtbegin.o )

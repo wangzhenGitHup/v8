@@ -1,0 +1,1 @@
+../../generated/sysif_client/freqmgr/libsysif/freqmgr/api.h

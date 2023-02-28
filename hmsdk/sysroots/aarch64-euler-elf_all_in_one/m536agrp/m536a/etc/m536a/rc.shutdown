@@ -1,0 +1,30 @@
+#!/bin/bash
+echo "System is going down for reboot or poweroff"
+
+# reserved 60s to do sync and umount 
+(sleep 60 && echo "system down timeout and try force reboot..." && reboot -f) &
+bg_pid=$!
+
+# skip pid_1[init], pid_$$[self], pid_$PPID[parent], pid_$bg_pid[reserved job]
+signal_all_processes() {
+	for i in `ps | grep -v " PID " | grep -v "sleep 60" | awk '{print $1}'`
+	do
+		if [ $i != 1 -a $i != $$ -a $i != $PPID -a $i != $bg_pid ]; then
+			kill -$1 $i > /dev/null 2>&1
+		fi
+	done
+}
+
+# Sending all processes the TERM signal
+echo "Sending SIGTERM to all processes"
+signal_all_processes 15
+sleep 1
+# Sending all processes the KILL signal
+echo "Sending SIGKILL to all processes"
+signal_all_processes 9
+
+echo "Syncing all filesystems"
+sync
+
+echo "Umounting all filesystems"
+umount -a -r > /dev/null 2>&1

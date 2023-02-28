@@ -1,0 +1,32 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2021-2021. All rights reserved.
+ * Description: Keymgr sysif api
+ * Author: Huawei OS Kernel Lab
+ * Create: Tue Mar 09 16:42:41 2021
+ */
+#ifdef SYSIF_EXPORT_API
+#include <libhmsrv_key/key.h>
+#endif
+
+DEFINE_MANAGER(keymgr, 4,
+	DEFINE_METHOD(keymgr, add,
+		  ARG(2,
+		      int, shm_id,
+		      struct key_add_param, param),
+		  RET_NO,
+		  SLOWDATA_NO)
+
+	DEFINE_METHOD(keymgr, request,
+		  ARG(2,
+		      int, shm_id,
+		      struct key_request_param, param),
+		  RET_NO,
+		  SLOWDATA_NO)
+
+	DEFINE_METHOD(keymgr, control,
+		  ARG(2,
+		      int, shm_id,
+		      struct keyctl_param, param),
+		  RET(1, struct keyctl_ret, ret),
+		  SLOWDATA_NO)
+)

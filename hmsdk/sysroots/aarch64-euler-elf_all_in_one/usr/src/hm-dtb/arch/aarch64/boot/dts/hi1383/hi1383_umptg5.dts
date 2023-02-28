@@ -1,0 +1,163 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2021. All rights reserved.
+ * Description: Device tree for hi1383 umptg5
+ * Author: Huawei OS Kernel Lab
+ * Create: Tue Nov 30 16:16:42 2021
+ */
+
+/dts-v1/;
+/include/ "hi1383.dtsi"
+
+/ {
+	hmmicrokernel {
+		cpus {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			cpu0: cpu@0 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <0>;
+				reg = <0x81180000>;
+			};
+			cpu1: cpu@1 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <1>;
+				reg = <0x81180100>;
+			};
+			cpu2: cpu@2 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <2>;
+				reg = <0x81180200>;
+			};
+			cpu3: cpu@3 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <3>;
+				reg = <0x81180300>;
+			};
+			cpu4: cpu@4 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <4>;
+				reg = <0x81190000>;
+			};
+			cpu5: cpu@5 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <5>;
+				reg = <0x81190100>;
+			};
+			cpu6: cpu@6 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <6>;
+				reg = <0x81190200>;
+			};
+			cpu7: cpu@7 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <7>;
+				reg = <0x81190300>;
+			};
+			cpu8: cpu@8 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <8>;
+				reg = <0x811a0000>;
+			};
+			cpu9: cpu@9 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <9>;
+				reg = <0x811a0100>;
+			};
+			cpu10: cpu@10 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <10>;
+				reg = <0x811a0200>;
+			};
+			cpu11: cpu@11 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <11>;
+				reg = <0x811a0300>;
+			};
+			cpu12: cpu@12 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <12>;
+				reg = <0x811b0000>;
+			};
+			cpu13: cpu@13 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <13>;
+				reg = <0x811b0100>;
+			};
+			cpu14: cpu@14 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <14>;
+				reg = <0x811b0200>;
+			};
+			cpu15: cpu@15 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <15>;
+				reg = <0x811b0300>;
+			};
+			cpu16: cpu@16 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <16>;
+				reg = <0x811c0000>;
+			};
+			cpu17: cpu@17 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <17>;
+				reg = <0x811c0100>;
+			};
+			cpu18: cpu@18 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <18>;
+				reg = <0x811c0200>;
+			};
+			cpu19: cpu@19 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <19>;
+				reg = <0x811c0300>;
+			};
+			cpu20: cpu@20 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <20>;
+				reg = <0x811d0000>;
+			};
+			cpu21: cpu@21 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <21>;
+				reg = <0x811d0100>;
+			};
+			cpu22: cpu@22 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <22>;
+				reg = <0x811d0200>;
+			};
+			cpu23: cpu@23 {
+				compatible = "arm,cortex-a72", "arm,armv8";
+				device_type = "cpu";
+				logic_id = <23>;
+				reg = <0x811d0300>;
+			};
+		};
+	};
+};

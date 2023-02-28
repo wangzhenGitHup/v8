@@ -1,0 +1,1 @@
+{"server_name": "freqmgr", "methods": ["freqmgr_sysfs_read", "freqmgr_sysfs_write", "freqmgr_sysfs_rsvd_2", "freqmgr_sysfs_rsvd_1"]}

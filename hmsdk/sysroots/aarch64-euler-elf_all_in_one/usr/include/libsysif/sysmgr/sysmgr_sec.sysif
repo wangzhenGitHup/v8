@@ -1,0 +1,50 @@
+/*
+ * Copyright (C) Huawei Technologies Co., Ltd. 2019-2020. All rights reserved.
+ * Description: Provide ipc interfaces for sec
+ * Author: Huawei OS Kernel Lab
+ * Create: Thu May 09 10:51:16 2019
+ */
+#ifdef SYSIF_EXPORT_API
+#include <stdint.h>
+
+/*
+ * To support the mixed data model which means the client and the server
+ * may use different data model. See the comment for limitation of data type
+ * used in the sysif interfaces in <libsysif/base/api.h>.
+ */
+#define SECMGR_SEC_CONTEXT_MAX_LENGTH 64UL
+struct secmgr_sec_context {
+	char context[SECMGR_SEC_CONTEXT_MAX_LENGTH];
+};
+
+#endif
+
+DEFINE_MANAGER(sec, 8,
+	DEFINE_SIMPLE_METHOD(sec, cred_cfg,
+			     ARG_NO,
+			     RET(2, unsigned int, proc_num, unsigned int, mask),
+			     SLOWDATA_NO)
+	DEFINE_SIMPLE_METHOD(sec, setexeccon,
+			     ARG(1, struct secmgr_sec_context, ctx),
+			     RET_NO,
+			     SLOWDATA_NO)
+	DEFINE_SIMPLE_METHOD(sec, shconf_set_field,
+			     ARG(2, unsigned int, field, unsigned int, value),
+			     RET_NO,
+			     SLOWDATA_NO)
+	DEFINE_SIMPLE_METHOD(sec, crlread,
+			     ARG(3, void *, buf,
+				    unsigned int, buf_sz,
+				    unsigned int, offset),
+			     RET(1, unsigned int, nread),
+			     SLOWDATA_NO)
+	DEFINE_SIMPLE_METHOD(sec, crlwrite,
+			     ARG(2, const void *, crl,
+				    unsigned long long, crl_sz),
+			     RET_NO,
+			     SLOWDATA_NO)
+	DEFINE_SIMPLE_METHOD(sec, umask,
+			     ARG(1, int, mode),
+			     RET_NO,
+			     SLOWDATA_NO)
+)

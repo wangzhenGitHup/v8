@@ -1,0 +1,281 @@
+m4_include(`utils.m4')m4_dnl
+m4_define(`BUILTIN_ALL_ABILITIES',ECHO(`
+	cperm_new_permission,
+	cperm_new_del_actvpool,
+	cperm_load_last_uctx,
+	cperm_store_last_uctx,
+	cperm_actv_rw_caller_vm,
+	cperm_query_timer_first_timeout,
+	cperm_pmem_stat_paddr,
+	cperm_sched_native_service,
+	cperm_sched_admin,
+	cperm_sched_preempt,
+	cperm_klog,
+	cperm_kconsole,
+	cap_new_vspace,
+	cap_new_vm,
+	vm_vspace,
+	vm_vhost,
+	uvmm_static_shm,
+	uvmm_mclone_to_vm,
+	vnotify_create_achn,
+	vnotify_send_msg,
+	uvmm_vcpu_hotplug,
+	uvmm_vm_resume,
+	uvmm_vm_get_info,
+	uvmm_vm_trace_stats,
+	perf,
+	cpuctx_timer,
+	cpuctx_timer_attach_cpu,
+	cpuctx_debug,
+	cpuctx_debug_attach_cpu,
+	cpuctx_vcpu,
+	cpuctx_vcpu_attach_cpu,
+	irq,
+	irq_sgi,
+	irq_ioctl,
+	irq_suspend,
+	reboot,
+	sysconf,
+	sysconf_kernel,
+	stat,
+	proc_load_info,
+	setuid,
+	setgid,
+	rlimit,
+	hm_develop,
+	debug,
+	devmgr,
+	devmgr_mgmt,
+	devmgr_fops,
+	devmgr_fops_sysfs,
+	devmgr_hmnetd,
+	devmgr_pm,
+	procmgr_pm,
+	devhost_net_prepare,
+	devhost_net_init,
+	netd,
+	devhost_net_open,
+	devhost_rpc_invoke,
+	devhost_fops_mmap,
+	devhost_fops,
+	devhost_fops_sysfs,
+	devhost_pm,
+	pwrmgr_sysfs,
+	sysmgr_sysfs,
+	procfsmgr_access,
+	get_robust_list,
+	chroot,
+	iomem_mmap,
+	ns,
+	hostname,
+	klogport,
+	tty,
+	kev,
+	cperm_kev_privilege,
+	cperm_kev_irq,
+	cperm_kev_sample,
+	cperm_kev_klog,
+	cperm_kev_audit,
+	cperm_kev_trap_el2,
+	mount,
+	inotify,
+	fanotify,
+	devhost_net_stat,
+	coredump,
+	dumpthread,
+	sysguard,
+	sysctrl_debug,
+	settime,
+	raw_socket,
+	kevctrl,
+	cpuctrl,
+	sysctrl_klogport,
+	mac_admin,
+	getlabel,
+	setfcap,
+	security_xattr,
+	wakelock,
+	suspend_system,
+	respart,
+	net_admin,
+	net_dev,
+	net_fs,
+	net_bind,
+	sysfs,
+	procfs,
+	ftrans,
+	getprocfd,
+	kbox_admin,
+	kbox_user,
+	resmgr_resmgrfs,
+	quotactl,
+	devhost_net_vlan_getmaster,
+	guard_fs,
+	guard_service_ctrl,
+	init_notify,
+	setexeccon,
+	system_service,
+	dumpshm,
+	dynlog,
+	livepatch,
+	crlctrl,
+	serial_toggle,
+	audit_msg,
+	audit_ctl,
+	audit_write,
+	audit_read,
+	cperm_watchdog,
+	privileged_affinity,
+	set_runqueue,
+	cpuhp_listen,
+	cpuhp_action,
+	sys_time,
+	mmap_min_addr,
+	ipc_lock,
+	rlimit_nice,
+	rlimit_rtprio,
+'))m4_dnl
+m4_define(`BUILTIN_ALL_ACTIONS',ECHO(`
+	capget,
+	capset,
+	fread,
+	fwrite,
+	fexec,
+	fappend,
+	rename,
+	mknod,
+	unlink,
+	link,
+	setlabel,
+	getfileattr,
+	setfileattr,
+	addname,
+	delname,
+	getfsattr,
+	umount,
+	path_create,
+	path_acquire,
+	topic_create,
+	topic_broadcast,
+	topic_subscribe,
+	topic_destroy,
+	shm_create,
+	shm_acquire,
+	shm_destroy,
+	shm_reclaim,
+        shm_trans_grant_to,
+	mq_create,
+	mq_acquire,
+	mq_destroy,
+	mp_create,
+	mp_acquire,
+	mp_destroy,
+	mp_reclaim,
+	mp_populate,
+	svmq_create,
+	svmq_read,
+	svmq_write,
+	svmq_destroy,
+	svsem_create,
+	svsem_read,
+	svsem_write,
+	svsem_destroy,
+	svshm_create,
+	svshm_read,
+	svshm_write,
+	svshm_destroy,
+	spawn,
+	signal,
+	ptrace,
+	sem_create,
+	sem_acquire,
+	sem_alter,
+	mod_grant,
+	sched_set,
+	sched_get,
+	nice_set,
+	vnotify_create,
+	vnotify_attach
+'))m4_dnl
+m4_define(`BUILTIN_TYPES',ECHO(`
+	sysmgr,
+	vfs,
+	devhost,
+	init,
+	untrusted,
+	unlabeled,
+	boot,
+	reserved_port_range,
+	crypto,
+	lwipd,
+	devmgr,
+	auditmgr,
+	vm,
+	keymgr,
+'))m4_dnl
+m4_define(`BUILTIN_CONSTANTS',``
+BUILTIN_ALL_ACTIONS
+BUILTIN_ALL_ABILITIES
+BUILTIN_CONSTANTS
+BUILTIN_FILE_EXEC
+BUILTIN_FILE_READ
+BUILTIN_FILE_WRITE
+BUILTIN_TYPES
+'')m4_dnl
+m4_define(`BUILTIN_METHOD',``
+COMMENT:			the leader word of comments
+A:				an alias of ATTR
+ABILITY:			the literal of ability(1)
+ABILITY_POLICY:			give a type or an attribute(1) abilities(2...)
+ABILITY_HIERACHY_POLICY:	give a type or an attribute(1) hierachy_abilities(2...)
+ABILITY_POLICY_FULL:		give a type or an attribute(1) abilities(2:list) and allow it(1) to access memory ranges(3:list) and port ranges(4:list)
+ACTION:				the literal of action(1)
+ATTR:				the literal of attribute(1)
+BACKTICK:			the backtick
+ANNOTATE_ABILITY_HIERACHY:	annotate a classical ability(1) with corresponding ability hierachy(2)
+DEF_ABILITIES:			define abilities(*)
+DEF_ABILITY_HIERACHIES:		define ability hierachies(*)
+DEF_ACTIONS:			define actions(*)
+DEF_ATTRIBUTES:			define attributes(*)
+DEF_FILE_OBJECT:		define a file object with a type(1) and a path(2)
+DEF_TYPES:			define types(*)
+DEF_TYPES_WITH_ATTRIBUTES:	define types(1:list) with attributes(2:list)
+ECHO:				show all(*)
+INCLUDE:			include file(1)
+MEM_RANGE:			allow a type(1) allow access memory ranges(2...)
+PORT_RANGE:			allow a type(1) allow access port ranges(2...)
+SINGLEQUOTE:			the singlequote
+T:				an alias of TYPE
+TE_POLICY:			allow a type or an attribute(1) to do some actions(3:list) to a type or an attribute(2)
+TRANSITION:			when subject type(1) do action(3) to object type(2), use target type(4)
+TYPE:				the literal of type(1)
+TYPE_ADD_ATTRIBUTES:		append attributes(2:list) into types(1:list)
+'')m4_dnl
+m4_define(`BUILTIN_FILE_READ',ECHO(`
+	fread,
+	getfileattr
+'))m4_dnl
+m4_define(`BUILTIN_FILE_WRITE',ECHO(`
+	fwrite,
+	fappend,
+	rename,
+	setfileattr,
+	mknod,
+	unlink,
+	link,
+	addname,
+	delname
+'))m4_dnl
+m4_define(`BUILTIN_FILE_EXEC',ECHO(`
+	fexec
+'))m4_dnl
+m4_define(`USE_PERMISSIVE_MODE',`
+	DEF_TYPES(builtin_mac_permissive)
+')m4_dnl
+m4_define(`USE_DISABLE_MODE',`
+	DEF_TYPES(builtin_mac_disable)
+')m4_dnl
+m4_define(`USE_PERMISSIVE_CACHE_MODE',`
+	DEF_TYPES(builtin_mac_permissive_cache)
+')m4_dnl

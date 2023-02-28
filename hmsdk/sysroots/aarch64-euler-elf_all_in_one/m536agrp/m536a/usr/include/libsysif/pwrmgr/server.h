@@ -1,0 +1,1 @@
+../../generated/sysif_server/pwrmgr/libsysif/pwrmgr/server.h

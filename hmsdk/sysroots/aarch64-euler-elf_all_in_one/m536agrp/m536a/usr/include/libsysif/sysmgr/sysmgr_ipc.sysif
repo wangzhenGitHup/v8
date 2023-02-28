@@ -1,0 +1,92 @@
+/*
+ * Copyright (C) Huawei Technologies Co., Ltd. 2020. All rights reserved.
+ * Author: Huawei OS Kernel Lab
+ * Create: Thu Feb 06 22:00:34 2020
+ */
+
+/*
+ * To support the mixed data model which means the client and the server
+ * may use different data model. See the comment for limitation of data type
+ * used in the sysif interfaces in <libsysif/base/api.h>.
+ */
+#ifdef SYSIF_EXPORT_API
+#include <time.h>
+#include <sys/sem.h>
+
+#include <libhmsrv_sys/hm_ipc_sem.h>
+#endif
+
+DEFINE_MANAGER(ipc, 16,
+	DEFINE_METHOD(ipc, shmget,
+		      ARG(3, int, key, unsigned long, size, int, shmflg),
+		      RET(1, int, shmid),
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(ipc, shmat,
+		      ARG(3, int, shmid, const void *, shmaddr, int, shmflg),
+		      RET(1, unsigned long long, rvaddr),
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(ipc, shmdt,
+		      ARG(1, const void *, addr),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(ipc, shmctl,
+		      ARG(4, int, shmid, int, cmd,
+			  void *, ds_ptr, unsigned long, len),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(ipc, shmctl_get,
+		      ARG(4, int, shmid, int, cmd,
+			  void *, recv_addr,
+			  unsigned long, size),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(ipc, msgget,
+		      ARG(2, int, key, int, msgflg),
+		      RET(1, int, msqid),
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(ipc, msgsnd,
+		      ARG(5, int, msqid, unsigned long, msg,
+			  unsigned long, msgsz, long, msgtyp, int, msgflg),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(ipc, msgrcv,
+		      ARG(5, int, msqid, unsigned long, msg,
+			  unsigned long, msgsz,
+			  long, msgtyp, int, msgflg),
+		      RET(2, unsigned int, msg_len, long long, mtype),
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(ipc, msgctl,
+		      ARG(6, int, msqid, int, cmd,
+			  unsigned long, send_buf,
+			  unsigned long, send_sz,
+			  unsigned long, recv_buf,
+			  unsigned long, recv_sz),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(ipc, semget,
+		      ARG(3, int, key, int, nsems, int, semflg),
+		      RET(1, int, semid),
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(ipc, semop,
+		      ARG(3, int, semid,
+			  unsigned long, sops,
+			  unsigned long, nsops),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(ipc, semctl,
+		      ARG(4, int, semid, int, semnum, int, cmd,
+			  unsigned long, arg),
+		      RET_NO,
+		      SLOWDATA_NO)
+)

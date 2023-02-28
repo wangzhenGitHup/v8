@@ -1,0 +1,20 @@
+#	gen	property
+#	genprop		[src]	[spec]		[dst]
+#	src:	the	file	path	for	generating	hash,	or	'default'	if	hash	is	not	needed
+#	spec:	the	spec	for	generating	prop	file,	or	'default'	is	the	prop	does	not	need	spec
+#	dst:	the	dstination	file	in	output	cpio
+#	note	that	the	src/spec/dst	files	are	all	raw	files
+genprop	bin/vfs.elf			etc/manifest/vfs.bin.elf.manifest				vfs.bin.elf.prop
+genprop	default				etc/manifest/main_sysmgr.elf.manifest		main_sysmgr.prop
+genprop	boot/sysmgr.elf		etc/manifest/local_sysmgr.elf.manifest		sysmgr.elf.prop
+genprop	bin/vfs.elf			etc/manifest/vfs.elf.manifest			vfs.elf.prop
+genprop	bin/init.elf		etc/manifest/init.elf.manifest				init.elf.prop
+genprop	bin/devmgr.elf		etc/manifest/devmgr.elf.manifest				devmgr.elf.prop
+genprop	bin/devhost.elf	etc/manifest/devhost.elf.manifest				devhost.elf.prop
+genprop	bin/tppmgr.elf		etc/manifest/tppmgr.elf.manifest				tppmgr.elf.prop
+genprop	bin/auditmgr.elf	etc/manifest/auditmgr.elf.manifest				auditmgr.elf.prop
+genprop	usr/bin/crypto.elf		etc/manifest/crypto.elf.manifest				crypto.elf.prop
+genprop	usr/bin/hmnetd.elf		etc/manifest/hmnetd.elf.manifest				hmnetd.elf.prop
+genprop	usr/bin/keymgr.elf		etc/manifest/keymgr.elf.manifest				keymgr.elf.prop
+genprop	usr/bin/vm.elf		etc/manifest/vm.elf.manifest				vm.elf.prop
+#genprop	usr/bin/helloworld.elf		etc/manifest/helloworld.elf.manifest		helloworld.elf.prop

@@ -1,0 +1,137 @@
+/dts-v1/;
+
+/ {
+	#address-cells = <2>;
+	#size-cells = <2>;
+
+	hmmicrokernel {
+		#address-cells = <2>;
+		#size-cells = <2>;
+
+		hm-hypervisor {
+			compatible = "hm-hypervisor";
+			#address-cells = <2>;
+			#size-cells = <2>;
+
+			/include/ "virt-hyp-common.dtsi"
+		};
+
+		/* See Documentation/dts-gic.md for interrupts and distributor_config */
+		gic: interrupt-controller@08000000 {
+			compatible = "arm,gic-v3";
+
+			#address-cells = <2>;
+			#size-cells = <2>;
+
+			/* Enable group 0, Group1NS, ARE, Disable Security, Split EOI and Deactive */
+			distributor-config = <0x80000053>;
+
+			#interrupt-cells = <3>;
+			#redistributor-regions = <1>;
+			redistributor-stride = <0x20000>;
+			interrupt-controller;
+			reg =	<0x0 0x08000000 0x0 0x10000>,	/* GICD */
+				<0x0 0x080A0000 0x0 0xF60000>;	/* GICR */
+			alignment = <0x10000 0x10000>;
+		};
+
+		external_core {
+			compatible = "huawei,external-core";
+
+			interrupt-parent = <&gic>;
+
+			cpu16 {
+				logic_extcore_id = <0>;
+				mpidr = <0x80000010>;
+			};
+			cpu17 {
+				logic_extcore_id = <1>;
+				mpidr = <0x80000011>;
+			};
+			cpu18 {
+				logic_extcore_id = <2>;
+				mpidr = <0x80000012>;
+			};
+			cpu19 {
+				logic_extcore_id = <3>;
+				mpidr = <0x80000013>;
+			};
+		};
+
+		/* MPAM node information
+		 * this is a fake node for testcase
+		 */
+		mpam {
+			compatible = "arm,mpam";
+			#address-cells = <2>;
+			#size-cells = <2>;
+
+			/* L3T: L3 cache, it includes L3 Tag and L3 Data */
+			l3tall0: l3tall0@0x98b90000 {
+				compatible = "l3tall";
+				reg = <0x0 0x98b90000 0x0 0x10000>;
+				alignment = <0x100000>;
+			};
+			/* HHA: hydra home agent. HHA is located between L3T and DDR,
+			 * providing the system with a DDR access channel. When the
+			 * CPU accesses memory, it reads DDR data through the
+			 * corresponding HHA.
+			 */
+			hhaall0: hhaall0@0x98c10000 {
+				compatible = "hhaall";
+				reg = <0x0 0x98c10000 0x0 0x10000>;
+				alignment = <0x100000>;
+			};
+		};
+
+		ipi {
+			/* smp ipi */
+			compatible = "arm,smp-ipi";
+
+			interrupt-parent = <&gic>;
+
+			/* interrupt settings:
+			 * 1st cell: real hardware irq number
+			 *     ARM recommendation: ID 0-7 for Non-Secure;
+			 *                         ID 8-15 for Secure Interrupt
+			 * 2nd cell: interrupt config
+			 *     bit [27:26]: Group setting
+			 *     bit [24]: Trigger Type
+			 *     bit [7:0]: Priority
+			 * 3rd cell: interrupt target config
+			 *     Warning: Send to all cpus by default
+			 */
+			interrupts =	<0 0x00000060 0xFFFFFFFF>, /* IPI_RESCHEDULE */
+					<1 0x00000060 0xFFFFFFFF>; /* IPI_CALL_FUNC */
+		};
+
+	};
+
+	soc {
+		compatible = "simple-bus";
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+		interrupt-parent = <&gic>;
+	};
+
+	chosen {
+		/* config devhost backend */
+		hmkernel,devmgr,backend =
+			"alias=linux,libname=/lib/libdh-linux.so.4.4,modpath=/lib/modules,default",
+			"alias=udk,libname=/lib/libdh-udk.so.0,modpath=/lib/modules",
+			"alias=linux-5.10,libname=/lib/libdh-linux.so.5.10,modpath=/lib/modules/linux-5.10.0";
+
+		/* config root devhost */
+		hmkernel,devmgr,root,backend = "linux";
+		hmkernel,devmgr,root,extensions = "/lib/extension/libdhext_transfs.so",
+						  "/lib/extension/libdhext_dso_demo.so";
+
+		/* config extra isolate group */
+		hmkernel,devmgr,isolate_group = "uiogrp";
+		hmkernel,devmgr,uiogrp,extensions = "/lib/extension/libdhext_dso_demo.so";
+	};
+};
+
+/include/ "virtio.dtsi"
+/include/ "virt-common.dtsi"

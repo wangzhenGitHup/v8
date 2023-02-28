@@ -1,0 +1,193 @@
+/*
+ * Device Tree Include file for SD62XX family SoC
+ */
+
+/ {
+	#address-cells = <2>;
+	#size-cells = <2>;
+	hmmicrokernel {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		interrupt-parent = <&gic>;
+		sysproc {
+			#address-cells = <2>;
+			#size-cells = <2>;
+			sysmgr {
+				compatible = "sysproc", "sysmgr";
+				/* filled by bootloader */
+				reg      = <0x0 0x0 0x0 0x0>;
+				vphdr    = <0x0 0x0>;
+				ventry   = <0x0 0x0>;
+				pvoffset = <0x0 0x0>;
+				nphdrs   = <0>;
+				stack_start = <0x0 0x0>;
+				stack_end = <0x0 0x0>;
+				canary = <0x0 0x0>;
+			};
+			idle {
+				compatible = "sysproc", "idle";
+				/* filled by bootloader */
+				reg      = <0x0 0x0 0x0 0x0>;
+				vphdr    = <0x0 0x0>;
+				ventry   = <0x0 0x0>;
+				pvoffset = <0x0 0x0>;
+				nphdrs   = <0>;
+				stack_start = <0x0 0x0>;
+				stack_end = <0x0 0x0>;
+				canary = <0x0 0x0>;
+			};
+			uappscpiodata {
+				compatible = "sysproc", "uappscpio";
+				/* filled by bootloader */
+				reg      = <0x0 0x0 0x0 0x0>;
+				ventry   = <0x0 0x0>;
+			};
+		};
+
+		kernel {
+			compatible = "kernel";
+			/* filled by bootloader */
+			canary = <0x0 0x0>;
+		};
+
+		bootdata {
+			#address-cells = <2>;
+			#size-cells = <2>;
+			dtb {
+				compatible = "bootdata", "dtb";
+				/* filled by bootloader */
+				reg = <0x0 0x0 0x0 0x0>;
+			};
+		};
+
+		sysctrl: system-controller@44B62000 {
+			compatible = "hisilicon,hisi-sysctrl", "syscon";
+			reg = <0x0 0x44B62000 0x0 0x10000>;
+			alignment = <0x10000>;
+		};
+
+		gic: interrupt-controller@458e0000 {
+			compatible = "arm,gic-400", "arm,gic-v2";
+			#interrupt-cells = <3>;
+			interrupt-controller;
+
+			/* enable group 0 & 1, set ActCtl and CBPR,
+			 * not enable irq, no split EOI mode
+			 * bit[11] is non-secure bit,
+			 * restrict kernel only in non-secure state.
+			 */
+			cpuif-config = <0x817>;
+
+			/* 0x458E0000 - 0x458E0FFF reserved */
+			/* 0x458E3000 - 0x458E3FFF GICC_DIR, split eoi mode */
+			/* 0x458E4000 - 0x458e4FFF GICH (cpu performing access) */
+			/* 0x458e5000 - 0x458e5FFF GICH (cpu selected by address) */
+			/* 0x458e6000 - 0x458e7FFF GICV */
+			reg =	<0x0 0x458E1000 0x0 0x1000>, /* GICD */
+				<0x0 0x458E2000 0x0 0x1000>; /* GICC */
+			alignment = <0x1000 0x1000>;
+		};
+
+		arm_generic_timer: generic_timer@0 {
+			compatible = "arm,armv8-timer";
+			clock-frequency = <19200000>;
+
+			/* interrupt settings */
+			interrupt-parent = <&gic>;
+
+			/* PPI 30: Non-secure physical timer
+			 * level triggered, hw_prio:0x60 */
+			interrupts = <30 0x00000060 0xFFFFFFFF>;
+			reg = <0x0 0x0 0x0 0x0>;
+		};
+
+		cachedfx: cachedfx@0 {
+			compatible = "hisilicon,arm-cache-dfx";
+			interrupt-parent = <&gic>;
+			interrupts = <127 0x00000060 0x1>;
+		};
+
+		ipi {
+			/* smp ipi */
+			compatible = "arm,smp-ipi";
+
+			interrupt-parent = <&gic>;
+
+			/* interrupt settings:
+			 * 1st cell: real hardware irq number
+			 *     ARM recommendation: ID 0-7 for Non-Secure;
+			 *                         ID 8-15 for Secure Interrupt
+			 * 2nd cell: interrupt config
+			 *     bit [27:26]: Group setting
+			 *     bit [24]: Trigger Type
+			 *     bit [23:8]: reserved
+			 *     bit [7:6]: Group Priority
+			 *     bit [5:4]: Sub Priority
+			 * 3rd cell: interrupt target config
+			 *     support a maximum 8 CPUs.
+			 */
+			interrupts = <0 0x00000060 0xffffffff>, /* IPI_RESCHEDULE */
+				     <1 0x00000060 0xffffffff>, /* IPI_CALL_FUNC */
+				     <2 0x00000060 0xffffffff>; /* IPI_CPU_STOP */
+		};
+
+		/* using user-level irq dispatcher to manage all rru irqs */
+		rru_interrupts {
+			compatible = "rru,interrupts";
+			interrupt-parent = <&gic>;
+		};
+
+		coredump {
+			coredump_force = <1>;
+		};
+		security {
+			trusted_boot = "disabled";
+		};
+	};
+
+	/* For kernel uart driver */
+	uart@44b54000 {
+		compatible = "snps,dw-apb-uart", "arm,dw8250,uart";
+		reg = <0x0 0x44b54000 0x0 0x1000>;
+		alignment = <0x1000>;
+
+		interrupt-parent = <&gic>;
+		/* priority 0b0110, level-triggered, target cpu 0 */
+		interrupts = <41 0x60 0x1>;
+		/* enable fifo */
+		fifo-enabled;
+	};
+
+	soc {
+		compatible = "simple-bus";
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		uart0: uart@44b54000 {
+			compatible = "udk_serial_8250";
+			reg = <0x0 0x44B54000 0x0 0x1000>;
+			alignment = <0x1000>;
+
+			kernel-input;
+			/* enable fifo */
+			fifo-enabled;
+			clock_frequency = <200000000>; /* 200MHz */
+			no-autoload;
+		};
+
+		femac0: femac@44020000 {
+			compatible = "hifemac";
+			mac-id = <0>;
+			reg = <0x0 0x44020000 0x0 0x2000>;
+			interrupt-parent = <&gic>;
+			interrupts = <58 0x000000E0 0x00000001>;
+			no-autoload;
+		};
+
+		pramdisk0: pramdisk@d740000 {
+			compatible = "pramdisk";
+			reg = <0x0 0x0D740000 0x0 0x400000>;
+		};
+	};
+};

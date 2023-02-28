@@ -1,0 +1,265 @@
+/dts-v1/;
+/ { #address-cells = <2>; #size-cells = <2>; hmmicrokernel {
+	compatible = "hisilicon,hi1981-tsch";
+	interrupt-parent = <&gic>;
+	#address-cells = <2>;
+	#size-cells = <2>;
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		cpu0: cpu@0 {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <0>;
+			reg = <0x81120000>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+				interrupt-parent = <&gic>;
+				/* PPI 23: PMUIRQ, level triggered, hwprio:0x60 */
+				interrupts = <23 0x00000060 0xFFFFFFFF>;
+			};
+		};
+	};
+
+	memory@0x00000000 {
+		device_type = "memory";
+		reg = <0x00000000 0x19e00000 0x00000000 0x2000000>;
+	};
+
+	sysproc {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		sysmgr {
+			compatible = "sysproc", "sysmgr";
+			/* filled by bootloader */
+			reg      = <0x0 0x0 0x0 0x0>;
+			vphdr    = <0x0 0x0>;
+			ventry   = <0x0 0x0>;
+			pvoffset = <0x0 0x0>;
+			nphdrs   = <0>;
+			stack_start = <0x0 0x0>;
+			stack_end = <0x0 0x0>;
+			canary = <0x0 0x0>;
+		};
+
+		idle {
+			compatible = "sysproc", "idle";
+			/* filled by bootloader */
+			reg      = <0x0 0x0 0x0 0x0>;
+			vphdr    = <0x0 0x0>;
+			ventry   = <0x0 0x0>;
+			pvoffset = <0x0 0x0>;
+			nphdrs   = <0>;
+			stack_start = <0x0 0x0>;
+			stack_end = <0x0 0x0>;
+			canary = <0x0 0x0>;
+		};
+	};
+
+	kernel {
+		compatible = "kernel";
+		/* filled by bootloader */
+		canary = <0x0 0x0>;
+	};
+
+	bootdata {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		dtb {
+			compatible = "bootdata", "dtb";
+			/* filled by bootloader */
+			reg = <0x0 0x0 0x0 0x0>;
+		};
+	};
+
+	timer {
+		compatible = "arm,armv8-timer";
+		clock-frequency = <19200000>;
+
+		/* interrupt settings */
+		interrupt-parent = <&gic>;
+
+		/* PPI 30: Non-secure physical timer
+		 * level triggered, hwprio:0x60 */
+		interrupts = <30 0x00000060 0xFFFFFFFF>,
+			     <26 0x00000060 0xFFFFFFFF>;
+	};
+
+	/* See Documentation/dts-gic.md for interrupts and distributor_config */
+	gic: interrupt-controller@602000000 {
+		compatible = "arm,gic-v3";
+
+		#address-cells = <2>;
+		#size-cells = <2>;
+
+		/* Enable group 0, Group1NS, Group1S, ARE_NS, ARE_S,
+		 * Split EOI and Deactive Mode */
+		distributor-config = <0x80000037>;
+
+		gicd_readonly;
+
+		#interrupt-cells = <3>;
+		#redistributor-regions = <1>;
+		redistributor-stride = <0x40000>;
+		interrupt-controller;
+
+		reg =	<0x6 0x02000000 0x0 0x10000>,	/* GICD */
+			<0x6 0x02100000 0x0 0x800000>;	/* GICR */
+		alignment = <0x100000 0x100000>;
+
+		interrupts = <25 0x000000E0 0xFFFFFFFF>;
+
+		/* We haven't support this */
+		its: interrupt-controller@604000000 {
+			compatible = "arm,gic-v3-its";
+			its_readonly;
+			msi-controller;
+			reg = <0x6 0x04000000 0x0 0x1000000>;
+			alignment = <0x100000>;
+			#interrupt-cells = <4>;
+		};
+	};
+
+	ipi {
+		/* smp ipi */
+		compatible = "arm,smp-ipi";
+
+		interrupt-parent = <&gic>;
+
+		/* interrupt settings:
+		 * 1st cell: real hardware irq number
+		 *     ARM recommendation: ID 0-7 for Non-Secure;
+		 *                         ID 8-15 for Secure Interrupt
+		 * 2nd cell: interrupt config
+		 *     bit [27:26]: Group setting
+		 *     bit [24]: Trigger Type
+		 *     bit [23:8]: Reserved
+		 *     bit [7:0]: Priority
+		 * 3rd cell: interrupt target config
+		 *     Warning: Send to all cpus by default
+		 */
+		interrupts =	<0 0x00000060 0xFFFFFFFF>, /* IPI_RESCHEDULE */
+				<1 0x00000060 0xFFFFFFFF>; /* IPI_CALL_FUNC */
+	};
+
+	/* used to debug its driver */
+	debug_dev0:dev_debug@0 {
+		compatible = "arm,gic-its-debug0";
+		interrupts =	<0x7f80 0 0 0>,
+				<0x7f80 7 0 0>,
+				<0x7f80 14 0 0>,
+				<0x7f80 23 0 0>;
+		msi-parent = <&its>;
+	};
+
+	kev {
+		compatible = "huawei,kev-trace";
+
+		/*
+		 * This is just a sample configuration. The ring buffer size is
+		 * intentially set to a small value to pass the CI test which
+		 * calls kev_print() to print ALL kev data in a panic test.
+		 */
+		memory@0 {
+			type = <0x1>;
+			id = <0x0>;
+			ring-buffer-count = <0x4>;
+			/*
+			 * Only ring buffer DATA sizes. Memory head and ring
+			 * buffer heads are not included.
+			 * ring buffer 0: 32K
+			 * ring buffer 1: 1M (perf)
+			 * ring buffer 2: 256K
+			 * ring buffer 3: 2M (klog)
+			 */
+			ring-buffer-sizes = <0x8000 0x100000 0x40000 0x200000>;
+		};
+		kev_sample {
+			config = <0x2>;
+			enable = <0x1>;
+		};
+		kev_klog {
+			config = <0x8>;
+			enable = <0x1>;
+		};
+		kev_fiq {
+			enable = <0x1>;
+		};
+	};
+
+	hm-udrv {
+		compatible = "udrv";
+		reg = <0x1 0x0cf80000 0x0 0x010000>,
+		      <0x1 0x10400000 0x0 0x010000>,
+		      <0x1 0x100c0000 0x0 0x010000>,
+		      <0x1 0x0cf00000 0x0 0x01000>,
+		      <0x1 0x30920000 0x0 0x01000>,
+		      <0x1 0x30070000 0x0 0x10000>,
+		      <0x1 0x02040000 0x0 0x010000>,
+		      <0x0 0x4004000  0x0 0x4000>,
+		      <0x0 0x8000000  0x0 0x2000000>,
+		      <0x0 0x4000     0x0 0x4000>,
+		      <0x0 0x4800000  0x0 0x200000>,
+		      <0x0 0x800000   0x0 0x200000>,
+		      <0x0 0x1be00000 0x0 0x14000000>,
+		      <0x0 0x39600000 0x0 0x10000000>,
+		      <0x6 0x20000000 0x0 0x1a000000>,
+		      <0x0 0x32200000 0x0 0x2800000>,
+		      <0x8 0x1000000  0x0 0x1000000>,
+		      <0x6 0x001D0000 0x0 0x10000>,
+		      <0x1 0x0c000000 0x0 0x010000>,
+                      <0x0 0x4bffe000 0x0 0x2000>,
+		      <0x6 0x02000000 0x0 0x900000>,
+                      <0x6 0x04000000 0x0 0x100000>;
+	};
+
+	coredump {
+		coredump_force = <1>;
+	};
+
+	locktrace {
+		locktrace_enable = <0>;
+	};
+	};
+
+	psci {
+		compatible = "tsch,psci";
+		interrupt-parent = <&gic>;
+		alignment = <0x1000>;
+		reg = <0x00000006 0x20040000 0x00000000 0x00001000>;
+	};
+
+	soc {
+		compatible = "simple-bus";
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+		uart0: uart@840a0000 {
+			compatible = "arm,pl011", "arm,pl011,uart";
+			reg = <0x0 0x840a0000 0x0 0x10000>;
+			alignment = <0x1000>;
+
+			/* kernel control input */
+			kernel-input;
+			/* enable fifo */
+			fifo-enabled;
+
+			clock_frequency = <200000000>; /* 200MHz */
+			interrupt-parent=<&gic>;
+			interrupts=<66 0x00000060 0x00000001>;
+		};
+
+		arm_generic_timer: generic_timer {
+			compatible = "arm,armv8-generic-timer";
+			clock-frequency = <19200000>;
+
+			/* interrupt settings */
+			interrupt-parent = <&gic>;
+
+			/* PPI 30: Non-secure physical timer
+			 * level triggered, only cpu0, hwprio:0x60 */
+			interrupts = <30 0x00000060 0x00000001>;
+		};
+	};
+};

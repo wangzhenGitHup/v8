@@ -1,0 +1,251 @@
+/dts-v1/;
+/ { #address-cells = <2>; #size-cells = <2>; hmmicrokernel {
+	model = "qemu-virt32";
+	#address-cells = <2>;
+	#size-cells = <2>;
+
+	psci {
+		compatible = "arm,psci";
+		method = "smc";
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		cpu0: cpu@0 {
+			compatible = "arm,cortex-a15", "arm,armv7";
+			device_type = "cpu";
+			logic_id = <0>;
+			reg = <0x80000000>;
+		};
+
+		cpu1: cpu@1 {
+			compatible = "arm,cortex-a15", "arm,armv7";
+			device_type = "cpu";
+			logic_id = <1>;
+			reg = <0x80000001>;
+		};
+	};
+
+	memory@60000000 {
+		reg = <0x0 0x60000000 0x0 0x19000000>;
+		device_type = "memory";
+	};
+
+	sysproc {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		sysmgr {
+			compatible = "sysproc", "sysmgr";
+			/* filled by bootloader */
+			reg      = <0x0 0x0 0x0 0x0>;
+			vphdr    = <0x0 0x0>;
+			ventry   = <0x0 0x0>;
+			pvoffset = <0x0 0x0>;
+			nphdrs   = <0>;
+			stack_start = <0x0 0x0>;
+			stack_end = <0x0 0x0>;
+			canary = <0x0 0x0>;
+		};
+		idle {
+			compatible = "sysproc", "idle";
+			/* filled by bootloader */
+			reg      = <0x0 0x0 0x0 0x0>;
+			vphdr    = <0x0 0x0>;
+			ventry   = <0x0 0x0>;
+			pvoffset = <0x0 0x0>;
+			nphdrs   = <0>;
+			stack_start = <0x0 0x0>;
+			stack_end = <0x0 0x0>;
+			canary = <0x0 0x0>;
+		};
+		rootfsdata {
+			compatible = "sysproc", "rootfs";
+			/* filled by bootloader */
+			reg      = <0x0 0x0 0x0 0x0>;
+			ventry   = <0x0 0x0>;
+			pvoffset = <0x0 0x0>;
+		};
+		uappscpiodata {
+			compatible = "sysproc", "uappscpio";
+			/* filled by bootloader */
+			reg      = <0x0 0x0 0x0 0x0>;
+			ventry   = <0x0 0x0>;
+		};
+	};
+
+	kernel {
+		compatible = "kernel";
+		/* filled by bootloader */
+		canary = <0x0 0x0>;
+	};
+
+	bootdata {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		dtb {
+			compatible = "bootdata", "dtb";
+			/* filled by bootloader */
+			reg = <0x0 0x0 0x0 0x0>;
+		};
+	};
+
+	/*
+	 * Format of devices' 'interrupt' configuration is processed by IrqCtrl hardware
+	 * drivers. '#interrupt-cells' gives device tree layer a hint to checking
+	 * misconfiguration. The meaning of each cell are defined by hardware driver
+	 * and not necessary to be fixed or uniformed.
+	 *
+	 * For this cortex a9 gic v1 devices, we use 3 cells for each interrupt.
+	 * 1st cell is hardware interrupt number.
+	 *     SGI-[0-15]; PPI[16-31]; others are SPI.
+	 * 2nd cell is config, encoded as follows:
+	 *     bits[7:0]  : hardware priority
+	 *     bits[23:8] : reserved
+	 *     bits[24]   : trigger type.
+	 *                    1: edge triggered.
+	 *                    0: level triggered.
+	 *     bit[31:25] : reserved
+	 * 3rd cell is interrupt target config.
+	 *     support a maximum 8 CPUs.
+	 */
+
+	gic: interrupt-controller@8000000 {
+		compatible = "arm,gic-v2";
+		#interrupt-cells = <0x3>;
+		cpuif-config = <0x017>;
+		interrupt-controller;
+		reg =   <0x0 0x8000000 0x0 0x10000>, /* distributor */
+			<0x0 0x8010000 0x0 0x10000>;  /* controller */
+		alignment = <0x10000 0x10000>;
+	};
+
+	ipi {
+		/* smp ipi */
+		compatible = "arm,smp-ipi";
+
+		interrupt-parent = <&gic>;
+
+		/* interrupt settings:
+		 * 1st cell: real hardware irq number
+		 *     ARM recommendation: ID 0-7 for Non-Secure;
+		 *                         ID 8-15 for Secure Interrupt
+		 * 2nd cell: interrupt config
+		 *     bit [27:26]: Group setting
+		 *     bit [24]: Trigger Type
+		 *     bit [7:0]: Priority
+		 * 3rd cell: interrupt target config
+		 *     Warning: Send to all cpus by default
+		 */
+		interrupts = <0 0x00000060 0xFFFFFFFF>, /* IPI_RESCHEDULE */
+			     <1 0x00000060 0xFFFFFFFF>; /* IPI_CALL_FUNC */
+	};
+
+	syscounter {
+		compatible = "arm,armv7-timer";
+		alignment = <0x1000>;
+		interrupt-parent = <&gic>;
+		interrupts = <30 0x00000060 0xffffffff>;
+		clock-frequency = <50000000>;
+		kernel-tick;
+	};
+
+	kev {
+		compatible = "huawei,kev-trace";
+
+		memory@0 {
+			type = <0x0>;
+			ring-buffer-count = <0x4>;
+			ring-buffer-sizes = <0x8000 0x100000 0x40000 0x200000>;
+		};
+		kev_klog {
+			config = <0x8>;
+			enable = <0x1>;
+		};
+		kev_sample {
+			enable = <0x1>;
+		};
+		kev_fiq {
+			config = <0x2>;
+			enable = <0x1>;
+		};
+	};
+
+	hm-udrv {
+		compatible = "udrv";
+		reg = <0x0 0x9000000 0x0 0x0001000>,
+		      <0x0 0x9001000 0x0 0x0001000>,
+		      <0x0 0x9002000 0x0 0x0001000>,
+		      <0x0 0x9003000 0x0 0x0001000>,
+		      <0x0 0x9004000 0x0 0x0001000>,
+		      <0x0 0x9005000 0x0 0x0001000>,
+		      <0x0 0x00000000 0x0 0x4000000>;
+	};
+
+	coredump {
+		coredump_force = <1>;
+	};
+
+	security {
+		trusted_boot = "disabled";
+	};
+
+	};
+
+	soc {
+		compatible = "simple-bus";
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+		interrupt-parent = <&gic>;
+
+		uart0: uart@09000000 {
+			compatible = "arm,pl011","arm,pl011,uart";
+			reg = <0x0 0x9000000 0x0 0x1000>;
+			alignment = <0x1000>;
+			interrupt-parent = <&gic>;
+			interrupts = <33 0x00000060 0x00000001>;
+			kernel-input;
+		};
+
+		uio_test: uio_test@10009000 {
+			compatible = "genuio";
+			reg = <0x0 0x9000000 0x0 0x1000>;
+			alignment = <0x1000>;
+		};
+/* fakedevice*2 for testcase "test__devmgr_multi_uio" */
+		fake0: fake@1000a000 {
+			compatible = "genuio";
+			reg = <0x0 0x9001000 0x0 0x1000>,
+			      <0x0 0x9002000 0x0 0x1000>;
+			alignment = <0x1000>;
+		};
+
+		fake1: fake@1000c000 {
+			compatible = "genuio";
+			reg = <0x0 0x9003000 0x0 0x1000>,
+			      <0x0 0x9004000 0x0 0x1000>,
+			      <0x0 0x9005000 0x0 0x1000>;
+			alignment = <0x1000>;
+		};
+		/* for create /dev/mtdblock0 */
+		flash0: flash@0 {
+			compatible = "cfi-flash";
+			reg = <0x0 0x0 0x0 0x4000000>;
+			bank-width = <4>;
+			partitions {
+				compatible = "fixed-partitions";
+				#address-cells = <1>;
+				#size-cells = <1>;
+				partition@0 {
+					label = "test-a";
+					reg = <0 0x2000000>;
+				};
+				partition@200000 {
+					label = "test-b";
+					reg = <0x2000000 0x2000000>;
+				};
+			};
+		};
+	};
+};

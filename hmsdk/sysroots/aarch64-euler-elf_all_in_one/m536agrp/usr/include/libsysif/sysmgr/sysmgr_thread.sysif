@@ -1,0 +1,189 @@
+/*
+ * Copyright (C) Huawei Technologies Co., Ltd. 2018-2020. All rights reserved.
+ * Description: Sysmgr thread function declaration
+ * Author: Huawei OS Kernel Lab
+ * Create: Mon Nov 26 17:19:19 2018
+ */
+#ifdef SYSIF_EXPORT_API
+#include <libhmsrv_sys/hm_thread.h>
+#include <libhmsrv_sys/hm_futex.h>
+
+/*
+ * To support the mixed data model which means the client and the server
+ * may use different data model. See the comment for limitation of data type
+ * used in the sysif interfaces in <libsysif/base/api.h>.
+ */
+struct threadmgr_thread_name {
+	char name[HMCAP_THREAD_NAME_SIZE];
+};
+
+#define PATH_NAME_MAX 64
+struct path_name {
+	char path[PATH_NAME_MAX];
+};
+
+#endif
+
+DEFINE_MANAGER(thread, 32,
+	DEFINE_SIMPLE_METHOD(thread, exit,
+			     ARG(1, int, exitval),
+			     RET_NO,
+			     SLOWDATA_NO)
+
+	DEFINE_SIMPLE_METHOD(thread, kill,
+			     ARG(1, int, tid),
+			     RET_NO,
+			     SLOWDATA_NO)
+
+	DEFINE_METHOD(thread, gettid,
+		      ARG_NO,
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(thread, tid2cref,
+		      ARG(1, int, tid),
+		      RET(1, cref_t, tcb_cref),
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(thread, set_tid_address,
+		      ARG(2, cref_t, tcb_cref,
+			  int *, tid_addr),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_SIMPLE_METHOD(thread, setname,
+			     ARG(2, cref_t, tcb_cref,
+				 struct threadmgr_thread_name, th_name),
+			     RET_NO,
+			     SLOWDATA_NO)
+
+	DEFINE_SIMPLE_METHOD(thread, set_pdeath_signal,
+			     ARG(1, int, signum),
+			     RET_NO,
+			     SLOWDATA_NO)
+
+	DEFINE_SIMPLE_METHOD(thread, get_pdeath_signal,
+			     ARG_NO,
+			     RET(1, int, signum),
+			     SLOWDATA_NO)
+
+	DEFINE_METHOD(thread, set_robust_list,
+		      ARG(2, unsigned long, list_head, unsigned long, len),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(thread, get_robust_list,
+		      ARG(1, int, tid),
+		      RET(2, unsigned long long, head_ptr, unsigned long long, len),
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(thread, freeze,
+			ARG(2, int, tid, int, flag),
+			RET_NO,
+			SLOWDATA_NO)
+
+	DEFINE_METHOD(thread, thaw,
+			ARG(1, int, tid),
+			RET_NO,
+			SLOWDATA_NO)
+
+	DEFINE_METHOD(thread, setpersonality,
+		      ARG(1, unsigned long, personality),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(thread, getpersonality,
+		      ARG_NO,
+		      RET(1, unsigned long long, personality),
+		      SLOWDATA_NO)
+
+	DEFINE_SIMPLE_METHOD(thread, bind_info,
+			     ARG(1, struct path_name, name),
+			     RET(2, uref_t, nobuf_uref, uref_t, buf_uref),
+			     SLOWDATA_NO)
+
+	DEFINE_SIMPLE_METHOD(thread, set_tickless,
+			     ARG(2, int, tid, bool, tickless),
+			     RET_NO,
+			     SLOWDATA_NO)
+
+	DEFINE_SIMPLE_METHOD(thread, set_runqueue,
+			     ARG(2, int, tid, unsigned int, newrq),
+			     RET_NO,
+			     SLOWDATA_NO)
+
+	DEFINE_METHOD(thread, sched_setparam,
+		      ARG(2, int, tid, int, prio),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(thread, sched_getparam,
+		      ARG(1, int, tid),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_SIMPLE_METHOD(thread, sched_setscheduler,
+		      ARG(3, int, tid, int, prio, int, policy),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_SIMPLE_METHOD(thread, sched_getscheduler,
+			     ARG(1, int, tid),
+			     RET_NO,
+			     SLOWDATA_NO)
+
+	DEFINE_METHOD(thread, getseq,
+		      ARG(1, int, tid),
+		      RET(1, unsigned long long, seq),
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(thread, setpriority,
+		      ARG(2, int, tid, int, nice),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(thread, getpriority,
+		      ARG(1, int, tid),
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(thread, sched_getattr,
+		      ARG_NO,
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_METHOD(thread, sched_get_interval_rr,
+		      ARG_NO,
+		      RET_NO,
+		      SLOWDATA_NO)
+
+	DEFINE_SIMPLE_METHOD(thread, sched_setaffinity,
+			     ARG(2, int, tid, __cpuset_t, cpuset),
+			     RET_NO,
+			     SLOWDATA_NO)
+
+	DEFINE_SIMPLE_METHOD(thread, sched_getaffinity,
+			     ARG(1, int, tid),
+			     RET(1, __cpuset_t, cpuset),
+			     SLOWDATA_NO)
+
+	DEFINE_SIMPLE_METHOD(thread, update_vnotify_futex,
+			     ARG(2, unsigned int, chn, const int *, futex),
+			     RET_NO,
+			     SLOWDATA_NO)
+
+	DEFINE_SIMPLE_METHOD(thread, futex_wait,
+			     ARG(1, struct thread_futex_wait_args, args),
+			     RET_NO,
+			     SLOWDATA_NO)
+
+	DEFINE_SIMPLE_METHOD(thread, futex_wake,
+			     ARG(1, struct thread_futex_wake_args, args),
+			     RET_NO,
+			     SLOWDATA_NO)
+
+	DEFINE_SIMPLE_METHOD(thread, futex_requeue,
+			     ARG(1, struct thread_futex_requeue_args, args),
+			     RET_NO,
+			     SLOWDATA_NO)
+)

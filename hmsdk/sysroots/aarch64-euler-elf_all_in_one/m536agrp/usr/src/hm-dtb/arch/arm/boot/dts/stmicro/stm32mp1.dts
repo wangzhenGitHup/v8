@@ -1,0 +1,212 @@
+/dts-v1/;
+
+/ { #address-cells = <2>; #size-cells = <2>; hmmicrokernel {
+        model = "STMicroelectronics STM32MP157C-DK2 Discovery Board";
+        compatible = "st,stm32mp157c-dk2", "st,stm32mp157";
+	#address-cells = <2>;
+	#size-cells = <2>;
+
+	psci {
+		compatible = "arm,psci";
+		method = "smc";
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		cpu@0 {
+			compatible = "arm,cortex-a7";
+			device_type = "cpu";
+			logic_id = <0>;
+			reg = <0x80000000>;
+			pmu {
+				compatible = "arm,cortex-a9-pmu";
+				interrupt-parent = <&gic>;
+				/* group default( = group 1), prio:0x60 */
+				interrupts = <232 0x00000060 0x1>;
+			};
+		};
+		cpu@1 {
+			compatible = "arm,cortex-a7";
+			device_type = "cpu";
+			logic_id = <1>;
+			reg = <0x80000001>;
+			pmu {
+				compatible = "arm,cortex-a9-pmu";
+				interrupt-parent = <&gic>;
+				/* group default( = group 1), prio:0x60 */
+				interrupts = <233 0x00000060 0x2>;
+			};
+		};
+	};
+
+	memory@c0000000 {
+		device_type = "memory";
+		reg = <0x00000000 0xc0000000 0x00000000 0x10000000>;
+	};
+
+	sysproc {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		sysmgr {
+			compatible = "sysproc", "sysmgr";
+			/* filled by bootloader */
+			reg      = <0x0 0x0 0x0 0x0>;
+			vphdr    = <0x0 0x0>;
+			ventry   = <0x0 0x0>;
+			pvoffset = <0x0 0x0>;
+			nphdrs   = <0>;
+			stack_start = <0x0 0x0>;
+			stack_end = <0x0 0x0>;
+			canary = <0x0 0x0>;
+		};
+		idle {
+			compatible = "sysproc", "idle";
+			/* filled by bootloader */
+			reg      = <0x0 0x0 0x0 0x0>;
+			vphdr    = <0x0 0x0>;
+			ventry   = <0x0 0x0>;
+			pvoffset = <0x0 0x0>;
+			nphdrs   = <0>;
+			stack_start = <0x0 0x0>;
+			stack_end = <0x0 0x0>;
+			canary = <0x0 0x0>;
+		};
+		rootfsdata {
+			compatible = "sysproc", "rootfs";
+			reg = <0x0 0x0 0x0 0x0>;
+			/* this is the VA entry of rootfs.cpio */
+			ventry   = <0x0 0x0>;
+			pvoffset = <0x0 0x0>;
+		};
+		uappscpiodata {
+			compatible = "sysproc", "uappscpio";
+			/* filled by bootloader */
+			reg      = <0x0 0x0 0x0 0x0>;
+			ventry   = <0x0 0x0>;
+		};
+	};
+
+	kernel {
+		compatible = "kernel";
+		/* filled by bootloader */
+		canary = <0x0 0x0>;
+	};
+
+	bootdata {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		dtb {
+			compatible = "bootdata", "dtb";
+			/* filled by bootloader */
+			reg = <0x0 0x0 0x0 0x0>;
+		};
+	};
+
+	/*
+	 * Format of devices' 'interrupt' configuration is processed by IrqCtrl hardware
+	 * drivers. '#interrupt-cells' gives device tree layer a hint to checking
+	 * misconfiguration. The meaning of each cell are defined by hardware driver
+	 * and not necessary to be fixed or uniformed.
+	 *
+	 * For this cortex a9 gic v1 devices, we use 3 cells for each interrupt.
+	 * 1st cell is hardware interrupt number.
+	 *     SGI-[0-15]; PPI[16-31]; others are SPI.
+	 * 2nd cell is config, encoded as follows:
+	 *     bits[7:0]  : hardware priority
+	 *     bits[23:8] : reserved
+	 *     bits[24]   : trigger type.
+	 *                    1: edge triggered.
+	 *                    0: level triggered.
+	 *     bit[31:25] : reserved
+	 * 3rd cell is interrupt target config.
+	 *     support a maximum 8 CPUs.
+	 */
+
+	gic: interrupt-controller@a0021000 {
+		compatible = "arm,gic-v2";
+		#interrupt-cells = <3>;
+		cpuif-config = <0x017>;
+		interrupt-controller;
+		irqctrl_id = <0x1000>;
+		/* Controller address has 0x100 offset, handle this in driver */
+		reg =	<0x0 0xa0021000 0x0 0x1000>, /* distributor */
+			<0x0 0xa0022000 0x0 0x2000>;  /* controller */
+		alignment = <0x1000 0x1000>;
+	};
+
+	iwdg2: watchdog@5a002000 {
+		compatible = "st,stm32mp1-iwdg";
+		alignment = <0x1000>;
+		reg = <0x0 0x5a002000 0x0 0x1000>;
+		timeout-sec = <32>;
+	};
+
+	watchdog {
+		compatible = "watchdog";
+		/* reserve 60s for hguard to take over the watchdog */
+		highdog-timeout= <60>;
+		/* reserve 10s for subcore to pull up*/
+		lowdog-timeout = <10>;
+	};
+
+	uart0: uart@40010000 {
+		compatible = "st,stm32h7-uart", "uart";
+		reg = <0x0 0x40010000 0x0 0x400>;
+		alignment = <0x1000>;
+		interrupt-parent = <&gic>;
+		interrupts = <84 0x000000A0 0x0000000F>;
+	};
+
+	ipi {
+		compatible = "arm,smp-ipi";
+		interrupt-parent = <&gic>;
+		interrupts = <0 0x00000060 0xFFFFFFFF>, /* IPI_RESCHEDULE */
+			     <1 0x00000060 0xFFFFFFFF>; /* IPI_CALL_FUNC */
+	};
+
+	kev {
+		compatible = "huawei,kev-trace";
+
+		memory@0 {
+			type = <0x0>; /* normal memory */
+			id = <0x0>;
+			ring-buffer-count = <0x2>;
+			/*
+			 * Only ring buffer DATA sizes. Memory head and ring
+			 * buffer heads are not included.
+			 * ring buffer 0: 32K
+			 * ring buffer 1: 512KB(perf)
+			 */
+			ring-buffer-sizes = <0x8000 0x80000> ;
+		};
+		kev_sample {
+			config = <0x2>;
+			format = <0x1>;
+			enable = <0x1>;
+		};
+	};
+
+	hm-udrv {
+		/* mark the whole IO windows as udrv */
+		compatible = "udrv";
+		reg = <0x0 0x40000000 0x0 0x50000000>;
+	};
+
+	syscounter {
+		compatible = "arm,armv7-timer";
+		alignment = <0x1000>;
+		interrupt-parent = <&gic>;
+		/*
+		 * PPI number 30, only enable for CPU0,
+		 * level triggered, group default (1),
+		 * group prio bit[7]:1, hardware prio bit[6-3]: 0x4
+		 */
+		interrupts = <30 0x000000A0 0x0000000F>;
+		clock-frequency = <25000000>;
+		kernel-tick;
+	};
+
+	};
+};

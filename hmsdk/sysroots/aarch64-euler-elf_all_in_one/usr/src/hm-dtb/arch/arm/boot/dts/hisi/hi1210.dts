@@ -1,0 +1,470 @@
+/dts-v1/;
+
+/ { #address-cells = <2>; #size-cells = <2>; hmmicrokernel {
+	model = "hi1210";
+	compatible = "hi1210";
+	#address-cells = <2>;
+	#size-cells = <2>;
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		cpu@0 {
+			compatible = "arm,cortex-a9";
+			device_type = "cpu";
+			logic_id = <0>;
+			reg = <0x80000000>;
+			pmu {
+				compatible = "arm,cortex-a9-pmu";
+				interrupt-parent = <&gic>;
+				/* group default( = group 1), prio:0x60 */
+				interrupts = <64 0x00000060 0x1>;
+			};
+		};
+	};
+
+	memory@C0A00000 {
+		device_type = "memory";
+		reg = <0x00000000 0xc0a00000 0x00000000 0x0a600000>,
+		      <0x00000000 0xcd800000 0x00000000 0x027ff000>;
+	};
+
+	sysproc {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		sysmgr {
+			compatible = "sysproc", "sysmgr";
+			/* filled by bootloader */
+			reg      = <0x0 0x0 0x0 0x0>;
+			vphdr    = <0x0 0x0>;
+			ventry   = <0x0 0x0>;
+			pvoffset = <0x0 0x0>;
+			nphdrs   = <0>;
+			stack_start = <0x0 0x0>;
+			stack_end = <0x0 0x0>;
+			canary = <0x0 0x0>;
+		};
+		idle {
+			compatible = "sysproc", "idle";
+			/* filled by bootloader */
+			reg      = <0x0 0x0 0x0 0x0>;
+			vphdr    = <0x0 0x0>;
+			ventry   = <0x0 0x0>;
+			pvoffset = <0x0 0x0>;
+			nphdrs   = <0>;
+			stack_start = <0x0 0x0>;
+			stack_end = <0x0 0x0>;
+			canary = <0x0 0x0>;
+		};
+		rootfsdata {
+			compatible = "sysproc", "rootfs";
+			reg = <0x0 0x0 0x0 0x0>;
+			/* this is the VA entry of rootfs.cpio */
+			ventry   = <0x0 0x0>;
+			pvoffset = <0x0 0x0>;
+		};
+		uappscpiodata {
+			compatible = "sysproc", "uappscpio";
+			/* filled by bootloader */
+			reg      = <0x0 0x0 0x0 0x0>;
+			ventry   = <0x0 0x0>;
+		};
+	};
+
+	kernel {
+		compatible = "kernel";
+		/* filled by bootloader */
+		canary = <0x0 0x0>;
+	};
+
+	bootdata {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		dtb {
+			compatible = "bootdata", "dtb";
+			/* filled by bootloader */
+			reg = <0x0 0x0 0x0 0x0>;
+		};
+	};
+
+	watchdog {
+		compatible = "watchdog";
+		/* reserve 15s for hguard to take over the watchdog */
+		highdog-timeout = <15>;
+	};
+
+	/*
+	 * Format of devices' 'interrupt' configuration is processed by IrqCtrl hardware
+	 * drivers. '#interrupt-cells' gives device tree layer a hint to checking
+	 * misconfiguration. The meaning of each cell are defined by hardware driver
+	 * and not necessary to be fixed or uniformed.
+	 * see Documentation/dts-gic.md for details.
+	 *
+	 * Note that priority [7:4] is valid, bit[7:6] is group prio
+	 */
+	gic: interrupt-controller@29001000 {
+		compatible = "arm,cortex-a9-gic";
+		#interrupt-cells = <3>;
+		interrupt-controller;
+		/* Controller address has 0x100 offset, handle this in driver */
+		reg =   <0x0 0x29001000 0x0 0x1000>, /* distributor */
+			<0x0 0x29000100 0x0 0x100>;  /* controller */
+		alignment = <0x1000 0x100>;
+	};
+
+	timer@30002000 {
+		compatible = "arm,sp804-timer";
+		reg = <0x0 0x30002000 0x0 0x1000>,
+			<0x0 0x30014000 0x0 0x1000>;
+		alignment = <0x1000 0x1000>;
+		clocksource-frequency = <112500000>;
+		clockevent-frequency = <112500000>;
+		sc_ctrl_init;
+		prescale = <1>;
+		auto-reload;
+		/* this timer should be driven by kernel */
+		kernel-tick;
+		value = <1125000>;
+
+		/* interrupt settings */
+		interrupt-parent = <&gic>;
+		/*
+		 * SPI number 37, only enable for CPU0,
+		 * level triggered, group default (group 1),
+		 * group prio bit[7:6]:0b01
+		 * sub prio bit[5:4]:0b10
+		 * prio:0x60
+		 */
+		interrupts = <37 0x00000060 0x00000001>;
+	};
+
+	global_timer: global_timer@29000200 {
+		compatible = "arm,cortex-a9-global-timer-ng";
+		reg = <0x0 0x29000200 0x0 0x100>;
+		alignment = <0x200>;
+		interrupt-parent = <&gic>;
+		/*
+		 * PPI number 27, only enable for CPU0,
+		 * level triggered, group default (group 1),
+		 * group prio bit[7:6]:0b01
+		 * sub prio bit[5:4]:0b10
+		 * prio:0x60
+		 */
+		interrupts = <27 0x00000060 0x00000001>;
+
+		frequency = <175000000>;
+		/* 0: periodic mode, 1: oneshot mode */
+		mode = <1>;
+	};
+
+	l2cache: l2cache@28800000 {
+		compatible = "arm,pl310-cache";
+		reg = <0x0 0x28800000 0x0 0x1000>;
+		alignment = <0x1000>;
+	};
+
+	wtd_fixpart@0x3000F000 {
+		compatible = "arm,wtd_fixpart";
+		freq = <2>;
+		kernel-feed-time = <1>;
+		#address-cells = <2>;
+		#size-cells = <2>;
+
+		pin1 {
+			compatible = "watchdog pin";
+			reg = <0x0 0x3000F000 0x0 0x1000>;
+			alignment = <0x1000>;
+			pin = <0x1000000>;
+			pulse-width = <2>;
+			last-width = <0>;
+			gpio-pin = <0>;
+			reset-pin-value = <0>;
+		};
+	};
+
+	/*
+	 * The watchdog of hi1210 has no interrupt generated before reset
+	 * so use a timer emulating watchdog to trigger interrupt
+	 */
+	wtd_timer@0x29000600 {
+		compatible = "arm,wtd_timer";
+		reg = <0x0 0x29000600 0x0 0x10>;
+		alignment = <0x1000>;
+		interrupt-parent = <&gic>;
+		/*
+		 * PPI number 29, only enable for CPU0,
+		 * level triggered, group 00 (fiq),
+		 * group prio bit[7:6]:0b00, sub prio bit[5:4]: 0b00
+		 * watchdog interrupt has highest prio and preempt group 1
+		 */
+		interrupts = <29 0x08000000 0x00000001>;
+		/* timeout is 500ms, HZ is 170000000 */
+		timeout = <85000000>;
+	};
+
+	/* HPI: Host Port Interface */
+	hpi@A0000000 {
+		compatible = "rru,hpi";
+		alignment = <0x1000 0x1000 0x1000 0x1000 0x1000>;
+		reg = <0x0 0x29001000 0x0 0x00001000>, /* GICD */
+		      <0x0 0x30014000 0x0 0x00001000>, /* 1210_SC */
+		      <0x0 0x98000000 0x0 0x00001000>, /* SD6155 */
+		      <0x0 0xA0000000 0x0 0x00001000>, /* 1210BUS0 */
+		      <0x0 0xA8000000 0x0 0x00001000>; /* 1210BUS1 */
+	};
+
+	gpio_reboot@0x3000F000 {
+		compatible = "reboot", "gpio";
+		reg = <0x0 0x3000F000 0x0 0x1000>;
+		alignment = <0x1000>;
+		pin = <0x400>;
+		default_level = <1>;
+	};
+
+	reserved-memory {
+		compatible = "reserved-memory";
+		#address-cells = <2>;
+		#size-cells = <2>;
+		memory@0xcbc00000 {
+			id = <0x0>;
+			reg = <0x0 0xcbc00000 0x0 0x102000>;
+			alignment = <0x1000>;
+		};
+	};
+
+	kbox {
+		address = <0x00000000 0xcbd02000>;
+		size = <0x00000000 0x2be000>;
+		region-count= <0x4>;
+		region@0 {
+			label = "snapshot";
+			size = <0x40000>;
+		};
+		region@1 {
+			label = "rsm";
+			size = <0x20000>;
+		};
+		region@2 {
+			label = "hguard";
+			size = <0x20000>;
+		};
+		region@3 {
+			label = "oom";
+			size = <0x20000>;
+		};
+	};
+
+	kevdump {
+		compatible = "reserved-memory";
+		address = <0x00000000 0xcbfc0000>;
+		size = <0x00000000 0x040000>;
+	};
+
+	kev {
+		compatible = "huawei,kev-trace";
+
+		memory@0 {
+			type = <0x0>; /* normal memory */
+			id = <0x0>;
+			ring-buffer-count = <0x2>;
+			/*
+			 * Only ring buffer DATA sizes. Memory head and ring
+			 * buffer heads are not included.
+			 * ring buffer 0: 32K
+			 * ring buffer 1: 512KB(perf)
+			 */
+			ring-buffer-sizes = <0x8000 0x80000> ;
+		};
+		memory@1 {
+			type = <0x1>; /* reserved memory */
+			id = <0x0>;
+			ring-buffer-count = <0x2>;
+			/*
+			 * Only ring buffer DATA sizes. Memory head and ring
+			 * buffer heads are not included.
+			 * ring buffer 2: 1MB(klog)
+			 * ring buffer 3: 4k(fiq)
+			 */
+			ring-buffer-sizes = <0x100000 0x1000>;
+		};
+		memory@2 {
+			type = <0x0>;
+			id = <0x0>;
+			ring-buffer-count = <0x1>;
+			/*
+			 * ring buffer 4: 16K(audit)
+			 */
+			ring-buffer-sizes = <0x4000>;
+		};
+		kev_sample {
+			config = <0x2>;
+			enable = <0x1>;
+		};
+		kev_klog {
+			config = <0x4>;
+			enable = <0x1>;
+		};
+		kev_fiq {
+			config = <0x8>;
+			enable = <0x1>;
+		};
+		kev_audit {
+			config = <0x10>;
+			enable = <0x1>;
+		};
+	};
+
+	hm-udrv {
+		compatible = "udrv";
+		reg = <0x0 0x30006000 0x0 0x00001000>,
+		      <0x0 0x30007000 0x0 0x00001000>,
+		      <0x0 0x80000000 0x0 0x08000000>,
+		      <0x0 0x00900000 0x0 0x00100000>,
+		      <0x0 0x40000000 0x0 0x00018000>,
+		      <0x0 0x30014000 0x0 0x00001000>,
+		      <0x0 0x29000000 0x0 0x00010000>,
+		      <0x0 0x28000000 0x0 0x00010000>,
+		      <0x0 0x30009000 0x0 0x00002000>,
+		      <0x0 0x3000E000 0x0 0x00001000>,
+		      <0x0 0x3000F000 0x0 0x00004000>,
+		      <0x0 0x20010000 0x0 0x00010000>,
+		      <0x0 0x28800000 0x0 0x00002000>,
+		      <0x0 0xB7FE8000 0x0 0x00030000>,
+		      <0x0 0x28010000 0x0 0x00020000>,
+		      <0x0 0x90000000 0x0 0x00001000>,
+		      <0x0 0x70000000 0x0 0x08000000>,
+		      <0x0 0x88000000 0x0 0x08000000>,
+		      <0x0 0x98000000 0x0 0x08000000>,
+		      <0x0 0xA0000000 0x0 0x08000000>,
+		      <0x0 0xA8000000 0x0 0x00001000>,
+		      <0x0 0x00100000 0x0 0x00800000>,
+		      <0x0 0x0C000000 0x0 0x00440000>,
+		      <0x0 0x0CA80000 0x0 0x00080000>,
+		      <0x0 0xD0000000 0x0 0x10000000>,
+		      <0x0 0x30015000 0x0 0x00001000>,
+		      <0x0 0x28030000 0x0 0x00010000>,
+		      <0x0 0x40018000 0x0 0x00008000>,
+		      <0x0 0x0CB00000 0x0 0x00D00000>,
+		      <0x0 0x0C440000 0x0 0x00001000>,
+		      <0x0 0x3000b000 0x0 0x00002000>,
+		      <0x0 0x0b400000 0x0 0x00800000>,
+		      <0x0 0x30001000 0x0 0x00003000>,
+		      <0x0 0xcbc00000 0x0 0x00400000>,
+		      <0x0 0xcc000000 0x0 0x00440000>,
+		      <0x0 0xcffff000 0x0 0x00001000>;
+	};
+
+	coredump {
+		coredump_force = <0>;
+	};
+
+	security {
+		audit = "enabled";
+		trusted_boot = "disabled";
+		sig_verif {
+			mode = "permissive";
+			type = "sha256";
+		};
+	};
+	};
+
+	/* For kernel uart driver */
+	uart@30006000 {
+		compatible = "snps,dw-apb-uart";
+		reg = <0x0 0x30006000 0x0 0x1000>;
+		alignment = <0x1000>;
+		interrupt-parent = <&gic>;
+		interrupts = <41 0x00000060 0x00000001>;
+	};
+
+	soc {
+		compatible = "simple-bus";
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		/* For user mode uart driver */
+		uart@30006000 {
+			compatible = "user,snps,dw-apb-uart";
+			reg = <0x0 0x30006000 0x0 0x1000>;
+			alignment = <0x1000>;
+			clock_frequency = <112500000>; /* 112.5MHz */
+			/* kernel control input, must be set in HI1210 */
+			kernel-input;
+			/* enable fifo */
+			fifo-enabled;
+			/*
+			 * Bit0 and bit1 of flow_state indicate the output and
+			 * input status of the serial port, respectively, 1 is
+			 * enabled, and 0 is disabled.
+			 */
+			flow_state = <0x3>;
+			no-autoload;
+		};
+
+		uartpwx: uartpwx@30007000 {
+			compatible = "uartpwx";
+			reg = <0x0 0x30007000 0x0 0x1000>;
+			alignment = <0x1000>;
+			clock_frequency = <112500000>; /* 112.5MHz */
+
+			interrupt-parent = <&gic>;
+			interrupts = <42 0x000000E0 0x00000001>;
+			no-autoload;
+		};
+
+		udkuio: udkuio0@00100000 {
+			compatible = "rru,udkuio", "udkuio";
+			reg =	<0x0 0x00900000 0x0 0x00100000>, /* HDF */
+				<0x0 0x40000000 0x0 0x00018000>, /* SRAM_L2MO */
+				<0x0 0x30014000 0x0 0x00001000>, /* SYSCTRL */
+				<0x0 0x29000000 0x0 0x00010000>, /* MPCORE */
+				<0x0 0x28000000 0x0 0x00010000>, /* HDLC */
+				<0x0 0x30009000 0x0 0x00002000>, /* DMA */
+				<0x0 0x3000E000 0x0 0x00001000>, /* IOCFG */
+				<0x0 0x3000F000 0x0 0x00004000>, /* GPIO */
+				<0x0 0x20010000 0x0 0x00010000>, /* SSMC */
+				<0x0 0x28800000 0x0 0x00002000>, /* L2C */
+				<0x0 0xB7FE8000 0x0 0x00030000>, /* DSP */
+				<0x0 0x28010000 0x0 0x00020000>, /* FEMAC */
+				<0x0 0x90000000 0x0 0x00001000>, /* FPGA0_LOAD */
+				<0x0 0x70000000 0x0 0x08000000>, /* FPGA0 */
+				<0x0 0x88000000 0x0 0x08000000>, /* SD6212 */
+				<0x0 0x98000000 0x0 0x08000000>, /* SD6155 */
+				<0x0 0xA0000000 0x0 0x08000000>, /* HI1210_S */
+				<0x0 0xA8000000 0x0 0x00001000>, /* HI1210_S1 */
+				<0x0 0x00100000 0x0 0x00800000>, /* BSPLOG */
+				<0x0 0x0C000000 0x0 0x00440000>, /* DUMP */
+				<0x0 0x0CA80000 0x0 0x00080000>, /* HDLCTXRXBD */
+				<0x0 0xD0000000 0x0 0x10000000>, /* DDR_DPD */
+				<0x0 0x30015000 0x0 0x00001000>, /* DDRC */
+				<0x0 0x28030000 0x0 0x00010000>, /* PMC */
+				<0x0 0x40018000 0x0 0x00008000>, /* PMC_BD */
+				<0x0 0x0CB00000 0x0 0x00D00000>, /* PMC_TXRXBUF */
+				<0x0 0x0b800000 0x0 0x00400000>, /* SCP_HIGH */
+				<0x0 0x0b400000 0x0 0x00400000>, /* BLACKBOX */
+				<0x0 0x0C440000 0x0 0x00001000>, /* TFFS */
+				<0x0 0xCFFFF000 0x0 0x00001000>; /* GPIO Lock */
+		};
+
+		pramdisk0: pramdisk@0x0C040000 {
+			compatible = "pramdisk";
+			reg = <0x00000000 0x0C040000 0x00000000 0x0400000>;
+		};
+
+		higpiodrv: higpiodrv@0x3000f000 {
+			compatible = "higpiodrv";
+			reg = <0x0 0x3000f000 0x0 0x4000>;
+			no-autoload;
+		};
+
+		femac0: femac0@28010000 {
+			compatible = "femac0,dw-apb-femac", "hifemac";
+			reg = <0x0 0x28010000 0x0 0x10000>;
+			interrupt-parent = <&gic>;
+			interrupts = <58 0x000000E0 0x00000001>;
+			no-autoload;
+		};
+	};
+};

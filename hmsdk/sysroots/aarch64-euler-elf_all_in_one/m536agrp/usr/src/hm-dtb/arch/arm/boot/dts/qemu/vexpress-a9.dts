@@ -1,0 +1,314 @@
+/dts-v1/;
+/ { #address-cells = <2>; #size-cells = <2>; hmmicrokernel {
+	model = "qemu-vexpress-a9";
+	#address-cells = <2>;
+	#size-cells = <2>;
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		cpu0: cpu@0 {
+			compatible = "arm,cortex-a9", "arm,armv7";
+			device_type = "cpu";
+			logic_id = <0>;
+			reg = <0x80000000>;
+			pmu {
+				compatible = "arm,cortex-a9-pmu";
+			};
+		};
+	};
+
+	memory@60000000 {
+		device_type = "memory";
+		/* currently, the spined kernel has only 1G va which is not
+		 * enough for direct map 0x3F400000 physical memory. Reduce
+		 * to 0x34000000 (1G - 128M - 64M) now until kernel implemented
+         * high address mapping. See arch/arm/include/memory.h for layout.
+		 * reg = <0x00000000 0x60000000 0x00000000 0x3F400000>;
+		 *
+		 * copage needs 1:1 mapping physical memory, and the file system
+		 * only has 500M virtual memory, so the physical memory needs to
+		 * be reduced to 400M
+		 * reg = <0x00000000 0x60000000 0x00000000 0x34000000>
+		 */
+		reg = <0x00000000 0x60000000 0x00000000 0x19000000>;
+	};
+
+	sysproc {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		sysmgr {
+			compatible = "sysproc", "sysmgr";
+			/* filled by bootloader */
+			reg      = <0x0 0x0 0x0 0x0>;
+			vphdr    = <0x0 0x0>;
+			ventry   = <0x0 0x0>;
+			pvoffset = <0x0 0x0>;
+			nphdrs   = <0>;
+			stack_start = <0x0 0x0>;
+			stack_end = <0x0 0x0>;
+			canary = <0x0 0x0>;
+		};
+		idle {
+			compatible = "sysproc", "idle";
+			/* filled by bootloader */
+			reg      = <0x0 0x0 0x0 0x0>;
+			vphdr    = <0x0 0x0>;
+			ventry   = <0x0 0x0>;
+			pvoffset = <0x0 0x0>;
+			nphdrs   = <0>;
+			stack_start = <0x0 0x0>;
+			stack_end = <0x0 0x0>;
+			canary = <0x0 0x0>;
+		};
+		rootfsdata {
+			compatible = "sysproc", "rootfs";
+			/* filled by bootloader */
+			reg      = <0x0 0x0 0x0 0x0>;
+			ventry   = <0x0 0x0>;
+			pvoffset = <0x0 0x0>;
+		};
+		uappscpiodata {
+			compatible = "sysproc", "uappscpio";
+			/* filled by bootloader */
+			reg      = <0x0 0x0 0x0 0x0>;
+			ventry   = <0x0 0x0>;
+		};
+	};
+
+	kernel {
+		compatible = "kernel";
+		/* filled by bootloader */
+		canary = <0x0 0x0>;
+	};
+
+	bootdata {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		dtb {
+			compatible = "bootdata", "dtb";
+			/* filled by bootloader */
+			reg = <0x0 0x0 0x0 0x0>;
+		};
+	};
+
+	/*
+	 * Format of devices' 'interrupt' configuration is processed by IrqCtrl hardware
+	 * drivers. '#interrupt-cells' gives device tree layer a hint to checking
+	 * misconfiguration. The meaning of each cell are defined by hardware driver
+	 * and not necessary to be fixed or uniformed.
+	 *
+	 * For this cortex a9 gic v1 devices, we use 3 cells for each interrupt.
+	 * 1st cell is hardware interrupt number.
+	 *     SGI-[0-15]; PPI[16-31]; others are SPI.
+	 * 2nd cell is config, encoded as follows:
+	 *     bits[7:0]  : hardware priority
+	 *     bits[23:8] : reserved
+	 *     bits[24]   : trigger type.
+	 *                    1: edge triggered.
+	 *                    0: level triggered.
+	 *     bit[25]    : reserved
+	 *     bit[26:27] : group
+	 *			0b00, 0b01: group default = group 1
+	 *			0b1x: group 0
+	 *     bit[31:28] : reserved
+	 * 3rd cell is interrupt target config.
+	 *     support a maximum 8 CPUs.
+	 */
+
+	gic: interrupt-controller@1e001000 {
+		compatible = "arm,cortex-a9-gic";
+		#interrupt-cells = <3>;
+		interrupt-controller;
+		/* Controller address has 0x100 offset, handle this in driver */
+		reg =   <0x0 0x1e001000 0x0 0x1000>, /* distributor */
+			<0x0 0x1e000100 0x0 0x100>;  /* controller */
+		alignment = <0x1000 0x100>;
+	};
+
+	timer@100e4000 {
+		compatible = "arm,sp804-timer";
+		reg = <0x0 0x100e4000 0x0 0x1000>;
+		alignment = <0x1000>;
+		clocksource-frequency = <1000000>;
+		clockevent-frequency = <1000000>;
+
+		prescale = <1>;
+		auto-reload;
+		/* this timer should be driven by kernel */
+		kernel-tick;
+		value = <10000>;
+
+		/* interrupt settings */
+		interrupt-parent = <&gic>;
+		/*
+		 * SPI number 80, only enable for CPU0,
+		 * level triggered, hardware priority is 0x60
+		 */
+		interrupts = <80 0x00000060 0x00000001>;
+	};
+
+	smp_timer: smp_timer@1e000000 {
+		compatible = "arm,cortex-a9-twd-timer";
+		reg = <0x0 0x1e000000 0x0 0x1000>;
+		alignment = <0x1000>;
+
+		interrupt-parent = <&gic>;
+		interrupts = <29 0x00000060 0x00000001>;
+	};
+
+	global_timer: global_timer@1e000200 {
+		compatible = "arm,cortex-a9-global-timer-ng";
+		reg = <0x0 0x1e000200 0x0 0x100>;
+		alignment = <0x200>;
+		interrupt-parent = <&gic>;
+		interrupts = <27 0x00000060 0x00000001>;
+		/*
+		 * qemu vexpress-a9 default frequency: 100MHz.
+		 * See a9_gtimer_get_update: when not using icount,
+		 * it simply reports ns get from gettimeofday and
+		 * divide by 10 (in a9_gtimer_get_conv).
+		 */
+		frequency = <100000000>;
+		/* 0: periodic mode, 1: oneshot mode */
+		mode = <1>;
+	};
+
+	vexpress_syscfg@0x100000a0 {
+		compatible = "arm,vexpress-syscfg";
+		reg = <0x0 0x100000a0 0x0 0x1000>;
+		alignment = <0x1000>;
+		device = <0>;
+	};
+
+	kev {
+		compatible = "huawei,kev-trace";
+
+		memory@0 {
+			type = <0x0>;
+			ring-buffer-count = <0x4>;
+			ring-buffer-sizes = <0x8000 0x100000 0x40000 0x200000>;
+		};
+		kev_klog {
+			config = <0x8>;
+			enable = <0x1>;
+		};
+		kev_sample {
+			enable = <0x1>;
+		};
+		kev_fiq {
+			config = <0x2>;
+			enable = <0x1>;
+		};
+	};
+
+	hm-udrv {
+		compatible = "udrv";
+		reg = <0x0 0x10009000 0x0 0x0001000>,
+		      <0x0 0x1000a000 0x0 0x0001000>,
+		      <0x0 0x0900b000 0x0 0x0001000>,
+		      <0x0 0x1000c000 0x0 0x0001000>,
+		      <0x0 0x1000d000 0x0 0x0001000>,
+		      <0x0 0x1000e000 0x0 0x0001000>,
+		      <0x0 0x10013000 0x0 0x0001000>,
+		      <0x0 0x00000000 0x0 0x4000000>,
+		      <0x0 0x9F400000 0x0 0x0500000>,
+		      <0x0 0x9F900000 0x0 0x0500000>;
+	};
+
+	coredump {
+		coredump_force = <1>;
+	};
+
+	security {
+		trusted_boot = "disabled";
+	};
+
+	};
+
+	soc {
+		compatible = "simple-bus";
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+		interrupt-parent = <&gic>;
+
+		uart0: uart@10009000 {
+			compatible = "arm,pl011", "arm,pl011,uart";
+			reg = <0x0 0x10009000 0x0 0x1000>;
+			alignment = <0x1000>;
+			interrupts = <37 0x00000060 0x00000001>;
+			kernel-input;
+		};
+
+		uio_test: uio_test@10009000 {
+			compatible = "genuio";
+			reg = <0x0 0x10009000 0x0 0x1000>;
+			alignment = <0x1000>;
+		};
+
+		/* fakedevice*2 for testcase "test__devmgr_multi_uio" */
+		fake0: fake@1000a000 {
+			compatible = "genuio";
+			reg = <0x0 0x1000a000 0x0 0x1000>,
+			      <0x0 0x0900b000 0x0 0x1000>;
+			alignment = <0x1000>;
+		};
+		fake1: fake@1000c000 {
+			compatible = "genuio";
+			reg = <0x0 0x1000c000 0x0 0x1000>,
+			      <0x0 0x1000d000 0x0 0x1000>,
+			      <0x0 0x1000e000 0x0 0x1000>;
+			alignment = <0x1000>;
+		};
+
+		flash0: flash@0 {
+			compatible = "cfi-flash";
+			reg = <0x0 0x0 0x0 0x4000000>;
+			bank-width = <4>;
+			partitions {
+				compatible = "fixed-partitions";
+				#address-cells = <1>;
+				#size-cells = <1>;
+				partition@0 {
+					label = "test-a";
+					reg = <0 0x2000000>;
+				};
+				partition@200000 {
+					label = "test-b";
+					reg = <0x2000000 0x2000000>;
+				};
+			};
+		};
+
+		virtio_mmio@10013000 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x10013000 0x0 0x200>;
+			interrupts = <72 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@10013200 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x10013200 0x0 0x200>;
+			interrupts = <73 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@10013400 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x10013400 0x0 0x200>;
+			interrupts = <74 0x000000E0 0x00000001>;
+		};
+		virtio_mmio@10013600 {
+			compatible = "virtio,mmio";
+			reg = <0x0 0x10013600 0x0 0x200>;
+			interrupts = <75 0x000000E0 0x00000001>;
+		};
+
+		/*
+		* configuration for pramdisk, and two block devices
+		* the size can be modified according to actual condition.
+		*/
+		pramdisk0: pramdisk@0 {
+			compatible = "hm-pramdisk";
+			reg = <0x00000000 0x9F400000 0x00000000 0x0500000>,
+			      <0x00000000 0x9F900000 0x00000000 0x0500000>;
+		};
+	};
+};

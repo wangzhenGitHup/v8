@@ -1,0 +1,58 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2020-2020. All rights reserved.
+ * Description: Generate sysmgr sysif apis using code generator
+ * Author: Huawei OS Kernel Lab
+ * Create: Mon 07 Dec 2020 07:41:51 PM CST
+ */
+
+/* for uint64_t */
+INCLUDE_C_HEADER(stdint.h)
+/* for pid_t */
+INCLUDE_C_HEADER(unistd.h)
+/* for __SYSCONF_STR_LEN_MAX */
+INCLUDE_C_HEADER(hmkernel/sysconf.h)
+/* for struct mq_attr */
+INCLUDE_C_HEADER(mqueue.h)
+/* for struct bunch */
+INCLUDE_C_HEADER(libbunch/bunch_ipc.h)
+
+USE_CALL_PREFIX(hmcall)
+USE_HANDLER_PREFIX(hmhandler)
+USE_SERVER_NAME(sysmgr)
+GROUP(1)
+
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_test.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_path.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_sysctrl.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_mem.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_proc.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_mqueue.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_thread.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_time.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_signal.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_irq.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_sec.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_procfs.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_vm.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_ns.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_guard.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_iov.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_res.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_module.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_entropy.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_kbox.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_dump.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_linuxemu.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_livepatch.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_perf.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_spif.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_log.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_sysfs.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_hmtrace.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_inject_fault.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_posixcap.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_ipc.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_hack.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_audit.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_key.sysif)
+INCLUDE_SUBSYSTEM(libsysif/sysmgr/sysmgr_cert.sysif)

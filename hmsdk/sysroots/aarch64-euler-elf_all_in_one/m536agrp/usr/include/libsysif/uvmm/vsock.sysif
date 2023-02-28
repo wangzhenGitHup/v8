@@ -1,0 +1,13 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2021-2021. All rights reserved.
+ * Description: Generate for uvmm vsock sysif api
+ * Author: Huawei OS Kernel Lab
+ * Create: Wed Jul 14 15:57:04 2021
+ */
+
+DEFINE_MANAGER(vsock, 1,
+	DEFINE_METHOD(vsock, vm_rx,
+		      ARG(4, const void *, hdr, size_t, hdr_len, const void *, data, size_t, len),
+		      RET_NO,
+		      SLOWDATA_NO)
+)

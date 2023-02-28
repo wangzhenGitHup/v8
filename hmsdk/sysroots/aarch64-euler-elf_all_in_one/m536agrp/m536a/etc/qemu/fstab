@@ -1,0 +1,3 @@
+#/dev/pramdisk1 /mnt1 ext2fs defaults 0 1
+
+tmpfs	/tmp	tmpfs	nodev,size=64M		0	0

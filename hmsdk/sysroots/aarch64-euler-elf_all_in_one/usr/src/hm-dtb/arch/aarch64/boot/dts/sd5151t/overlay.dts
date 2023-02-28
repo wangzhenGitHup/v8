@@ -1,0 +1,41 @@
+/dts-v1/;
+
+/ {
+	hm-fixup {
+		target-path = "/";
+		hm_fixup: __overlay__ {};
+	};
+};
+
+&hm_fixup {
+	interrupt-controller{
+		compatible = "hongmeng,virqchip";
+		irqctrl_id = <0x10000>;
+	};
+
+	/*
+	 * When the driver name matches the 'compatible' attribute,
+	 * it will cause the driver to be loaded twice. Add the
+	 * 'non-autoload' attribute to avoid this situation.
+	 */
+	nand {
+		no-autoload;
+	};
+
+	/* kernel-input */
+	uart0@0x10106000 {
+		status = "disabled";
+	};
+
+	hwdog-feed {
+		/* kernel wdt */
+		reg1 {
+			op = "readonly";
+			delay = <0x0>;
+		};
+		reg2 {
+			op = "readonly";
+			delay = <0x0>;
+		};
+	};
+};

@@ -1,0 +1,141 @@
+/dts-v1/;
+/ { #address-cells = <2>; #size-cells = <2>; hmmicrokernel {
+	#address-cells = <2>;
+	#size-cells = <2>;
+
+	psci {
+		compatible = "arm,psci";
+		method = "smc";
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		cpu0: cpu@0 {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <0>;
+			reg = <0x81000000>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+			};
+
+		};
+		cpu1: cpu@100 {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <1>;
+			reg = <0x81000100>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+			};
+
+		};
+		cpu2: cpu@200 {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <2>;
+			reg = <0x81000200>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+			};
+
+		};
+		cpu3: cpu@300 {
+			compatible = "arm,cortex-a55", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <3>;
+			reg = <0x81000300>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+			};
+		};
+		cpu4: cpu@400 {
+			compatible = "arm,cortex-a76", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <4>;
+			reg = <0x81000400>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+			};
+		};
+		cpu5: cpu@500 {
+			compatible = "arm,cortex-a76", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <5>;
+			reg = <0x81000500>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+			};
+		};
+		cpu6: cpu@600 {
+			compatible = "arm,cortex-a76", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <6>;
+			reg = <0x81000600>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+			};
+		};
+		cpu7: cpu@700 {
+			compatible = "arm,cortex-a76", "arm,armv8";
+			device_type = "cpu";
+			logic_id = <7>;
+			reg = <0x81000700>;
+			pmu {
+				compatible = "arm,armv8-pmuv3";
+			};
+		};
+	};
+
+	memory@7F800000 {
+		device_type = "memory";
+		reg = <0x00000000 0x7F800000 0x00000000 0x600000>;
+	};
+
+	bootdata {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		dtb {
+			compatible = "bootdata", "dtb";
+			/* filled by bootloader */
+			reg = <0x0 0x0 0x0 0x0>;
+		};
+	};
+
+	hm-microvisor {
+		compatible = "hm-microvisor";
+		#address-cells = <2>;
+		#size-cells = <2>;
+
+		/* for vm0*/
+		mem0 {
+			device-group = <0>;
+			compatible = "udrv";
+			normal-mem;
+			uvmm-access;
+			reg =   <0x0 0x00000000 0x0 0x40000000>,
+				<0x0 0x40000000 0x1 0x00000000>,
+				<0x1 0x40000000 0x1 0x00000000>;
+			map =   <0x0 0x00000000 0x0 0x40000000>,
+				<0x0 0x40000000 0x1 0x00000000>,
+				<0x1 0x40000000 0x1 0x00000000>;
+		};
+	};
+	};
+
+	soc {
+		compatible = "simple-bus";
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		uart0: uart@11002000 {
+			compatible = "snps,dw-apb-uart";
+			reg = <0x0 0x11002000 0x0 0x1000>;
+			alignment = <0x1000>;
+
+			kernel-input;
+		};
+	};
+};

@@ -1,0 +1,9 @@
+#
+# inittab       This file describes how the INIT process should set up
+#		the system during the initial booting process.
+
+# System initialization starts here
+
+::sysinit:/etc/hm.local
+::respawn:-/bin/bash -l
+::shutdown:/etc/rc.shutdown
