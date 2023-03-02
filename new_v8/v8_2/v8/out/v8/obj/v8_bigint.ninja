@@ -1,0 +1,11 @@
+defines = -DUSE_UDEV -DUSE_AURA=1 -DUSE_NSS_CERTS=1 -DUSE_OZONE=1 -DUSE_X11=1 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D_FORTIFY_SOURCE=2 -DCR_SYSROOT_HASH=2befe8ce3e88be6080e4fb7e6d412278ea6a7625 -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0 -DV8_TYPED_ARRAY_MAX_SIZE_IN_HEAP=64 -DENABLE_MINOR_MC -DENABLE_HANDLE_ZAPPING -DV8_ATOMIC_OBJECT_FIELD_WRITES -DV8_ATOMIC_MARKING_STATE -DV8_ENABLE_LAZY_SOURCE_POSITIONS -DV8_WIN64_UNWINDING_INFO -DV8_ENABLE_REGEXP_INTERPRETER_THREADED_DISPATCH -DV8_SNAPSHOT_COMPRESSION -DV8_SHORT_BUILTIN_CALLS -DV8_ENABLE_SYSTEM_INSTRUMENTATION -DV8_ENABLE_WEBASSEMBLY -DV8_COMPRESS_POINTERS -DV8_COMPRESS_POINTERS_IN_ISOLATE_CAGE -DV8_31BIT_SMIS_ON_64BIT_ARCH -DV8_DEPRECATION_WARNINGS -DV8_IMMINENT_DEPRECATION_WARNINGS -DCPPGC_CAGED_HEAP -DV8_TARGET_ARCH_ARM64 -DV8_HAVE_TARGET_OS -DV8_TARGET_OS_LINUX -DDISABLE_UNTRUSTED_CODE_MITIGATIONS -DV8_COMPRESS_POINTERS -DV8_COMPRESS_POINTERS_IN_ISOLATE_CAGE -DV8_31BIT_SMIS_ON_64BIT_ARCH -DV8_DEPRECATION_WARNINGS -DV8_IMMINENT_DEPRECATION_WARNINGS -DCPPGC_CAGED_HEAP
+include_dirs = -I../.. -Igen -I../.. -I../../include -Igen -Igen/include
+cflags = -fno-ident -fno-strict-aliasing --param=ssp-buffer-size=4 -fstack-protector -funwind-tables -fPIC -pipe -pthread -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -Wall -Wno-unused-local-typedefs -Wno-maybe-uninitialized -Wno-deprecated-declarations -Wno-comments -Wno-packed-not-aligned -Wno-missing-field-initializers -Wno-unused-parameter -fno-omit-frame-pointer -g0 -Wno-strict-overflow -Wno-return-type -Wno-int-in-bool-context -O3 -fdata-sections -ffunction-sections -fvisibility=default
+cflags_cc = -std=gnu++14 -Wno-narrowing -Wno-class-memaccess -fno-exceptions -fno-rtti --sysroot=../../../../../../hmsdk/sysroots/aarch64-euler-elf_all_in_one/
+label_name = v8_bigint
+target_out_dir = obj
+target_output_name = v8_bigint
+
+build obj/v8_bigint/vector-arithmetic.o: cxx ../../src/bigint/vector-arithmetic.cc
+
+build obj/v8_bigint.stamp: stamp obj/v8_bigint/vector-arithmetic.o
